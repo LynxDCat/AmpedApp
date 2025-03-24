@@ -1,0 +1,68 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/rounded_button"
+    android:padding="16dp"
+    android:layout_marginBottom="12dp"
+    android:elevation="4dp"
+    android:gravity="center_vertical"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <!-- Icon Image -->
+    <FrameLayout
+        android:layout_width="48dp"
+        android:layout_height="48dp">
+
+        <!-- Red Circle Background -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/red_circle"/>
+
+        <!-- Icon on Top -->
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@raw/music"
+            android:scaleType="centerInside"
+            android:tint="@color/white"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+
+    <!-- Text Container -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="16dp">
+
+        <!-- Title Text -->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clean Tone"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/poppins_regular"/>
+
+        <!-- Subtitle Text -->
+        <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lorem Ipsum"
+            android:textSize="12sp"
+            android:textColor="#D3D3D3"
+            android:fontFamily="@font/poppins_regular"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
