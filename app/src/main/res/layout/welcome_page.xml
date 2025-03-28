@@ -18,13 +18,14 @@
         android:layout_marginEnd="16dp"
         android:paddingVertical="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="64dp"/>
+        android:layout_marginBottom="64dp"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/LogIn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="Start"
         style="@style/RedButton"
         app:layout_constraintBottom_toTopOf="@+id/SignUp"
         app:layout_constraintEnd_toEndOf="parent"

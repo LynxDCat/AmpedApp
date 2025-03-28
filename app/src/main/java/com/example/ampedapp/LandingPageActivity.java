@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -35,6 +36,8 @@ public class LandingPageActivity extends AppCompatActivity {
     private ExecutorService executorService;
     private Runnable updateSeekBarDelay, updateSeekBarReverb, updateSeekBarCleantone, updateSeekBarDistortion, updateSeekBarOverdrive;
 
+    private ArrayList<String> selectedEffects = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +53,7 @@ public class LandingPageActivity extends AppCompatActivity {
         navAdd = findViewById(R.id.nav_add);
         navQueue = findViewById(R.id.nav_queue);
         // Set click listeners
-        navAdd.setOnClickListener(v -> openActivity(MainActivity.class));
+        navAdd.setOnClickListener(v -> openActivity(LandingPageActivity.class));
         navQueue.setOnClickListener(v -> openActivity(QueueActivity.class));
 
         buttonDelay = findViewById(R.id.button_delay);
@@ -101,36 +104,66 @@ public class LandingPageActivity extends AppCompatActivity {
 
         addButton.setOnClickListener(v -> {
             Log.d("AddQueueButton","Delay add button Clicked");
-            Log.d("AddQueueButton","Delay Added to the Queue");
-            Toast.makeText(this, "Delay Added to the Queue", Toast.LENGTH_SHORT).show();
+            if (!selectedEffects.contains("Delay")) {
+                EffectManager.getInstance().addEffect("Delay");
+                Log.d("AddQueueButton","Delay Added to the Queue");
+                Toast.makeText(this, "Delay Added to the Queue", Toast.LENGTH_SHORT).show();
+            } else {
+                Log.d("AddQueueButton","Delay is already in the Queue");
+                Toast.makeText(this, "Delay is already in the Queue", Toast.LENGTH_SHORT).show();
+            }
             dropdownDelay.setVisibility(View.GONE);
         });
 
         addButtonReverb.setOnClickListener(v -> {
             Log.d("AddQueueButton","Reverb add button Clicked");
-            Log.d("AddQueueButton","Reverb Added to the Queue");
-            Toast.makeText(this, "Reverb Added to the Queue", Toast.LENGTH_SHORT).show();
+            if (!selectedEffects.contains("Reverb")) {
+                EffectManager.getInstance().addEffect("Reverb");
+                Log.d("AddQueueButton","Reverb Added to the Queue");
+                Toast.makeText(this, "Reverb Added to the Queue", Toast.LENGTH_SHORT).show();
+            } else {
+                Log.d("AddQueueButton","Reverb is already in the Queue");
+                Toast.makeText(this, "Reverb is already in the Queue", Toast.LENGTH_SHORT).show();
+            }
             dropdownReverb.setVisibility(View.GONE);
         });
 
         addButtonCleantone.setOnClickListener(v -> {
             Log.d("AddQueueButton","Cleantone add button Clicked");
-            Log.d("AddQueueButton","Cleantone Added to the Queue");
-            Toast.makeText(this, "Cleantone Added to the Queue", Toast.LENGTH_SHORT).show();
+            if (!selectedEffects.contains("Cleantone")) {
+                EffectManager.getInstance().addEffect("Cleantone");
+                Log.d("AddQueueButton","Cleantone Added to the Queue");
+                Toast.makeText(this, "Cleantone Added to the Queue", Toast.LENGTH_SHORT).show();
+            } else {
+                Log.d("AddQueueButton","Cleantone is already in the Queue");
+                Toast.makeText(this, "Cleantone is already in the Queue", Toast.LENGTH_SHORT).show();
+            }
             dropdownCleantone.setVisibility(View.GONE);
         });
 
         addButtonDistortion.setOnClickListener(v -> {
             Log.d("AddQueueButton","Distortion add button Clicked");
-            Log.d("AddQueueButton","Distortion Added to the Queue");
-            Toast.makeText(this, "Distortion Added to the Queue", Toast.LENGTH_SHORT).show();
+            if (!selectedEffects.contains("Distortion")) {
+                EffectManager.getInstance().addEffect("Distortion");
+                Log.d("AddQueueButton","Distortion Added to the Queue");
+                Toast.makeText(this, "Distortion Added to the Queue", Toast.LENGTH_SHORT).show();
+            } else {
+                Log.d("AddQueueButton","Distortion is already in the Queue");
+                Toast.makeText(this, "Distortion is already in the Queue", Toast.LENGTH_SHORT).show();
+            }
             dropdownDistortion.setVisibility(View.GONE);
         });
 
         addButtonOverdrive.setOnClickListener(v -> {
             Log.d("AddQueueButton","Overdrive add button Clicked");
-            Log.d("AddQueueButton","Overdrive Added to the Queue");
-            Toast.makeText(this, "Overdrive Added to the Queue", Toast.LENGTH_SHORT).show();
+            if (!selectedEffects.contains("Overdrive")) {
+                EffectManager.getInstance().addEffect("Overdrive");
+                Log.d("AddQueueButton","Overdrive Added to the Queue");
+                Toast.makeText(this, "Overdrive Added to the Queue", Toast.LENGTH_SHORT).show();
+            } else {
+                Log.d("AddQueueButton","Overdrive is already in the Queue");
+                Toast.makeText(this, "Overdrive is already in the Queue", Toast.LENGTH_SHORT).show();
+            }
             dropdownOverdrive.setVisibility(View.GONE);
         });
 
@@ -309,6 +342,7 @@ public class LandingPageActivity extends AppCompatActivity {
 
     private void openActivity(Class<?> activityClass) {
         Intent intent = new Intent(LandingPageActivity.this, activityClass);
+        intent.putStringArrayListExtra("selectedEffects", selectedEffects);
         startActivity(intent);
     }
 

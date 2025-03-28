@@ -38,270 +38,28 @@
 
             <include
                 android:id="@+id/button_delay"
-                layout="@layout/custom_button_delay"/>
-
-            <!-- Dropdown Layout for Delay -->
-            <LinearLayout
-                android:id="@+id/dropdown_delay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"
-                android:layout_marginTop="8dp"
-                android:padding="16dp"
-                android:background="#242424"
-                android:elevation="4dp">
-
-                <!-- Audio Player (SeekBar + Play Button) -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageButton
-                        android:id="@+id/play_button"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@raw/play_icon"
-                        android:background="@null"
-                        android:tint="#FFFFFF"/>
-
-                    <SeekBar
-                        android:id="@+id/seekbar"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:max="100"
-                        android:progress="0"/>
-
-                </LinearLayout>
-
-                <!-- Add Button -->
-                <Button
-                    android:id="@+id/add_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add"
-                    android:layout_gravity="end"
-                    android:backgroundTint="#FF5252"
-                    android:textColor="#FFFFFF"
-                    android:layout_marginTop="8dp"/>
-
-            </LinearLayout>
+                layout="@layout/custom_button_delay"
+                android:visibility="gone"/>
 
             <include
                 android:id="@+id/button_reverb"
-                layout="@layout/custom_button_reverb"/>
-
-            <LinearLayout
-                android:id="@+id/dropdown_reverb"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"
-                android:layout_marginTop="8dp"
-                android:padding="16dp"
-                android:background="#242424"
-                android:elevation="4dp">
-
-                <!-- Audio Player (SeekBar + Play Button) -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageButton
-                        android:id="@+id/play_button_reverb"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@raw/play_icon"
-                        android:background="@null"
-                        android:tint="#FFFFFF"/>
-
-                    <SeekBar
-                        android:id="@+id/seekbar_reverb"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:max="100"
-                        android:progress="0"/>
-
-                </LinearLayout>
-
-                <!-- Add Button -->
-                <Button
-                    android:id="@+id/add_button_reverb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add"
-                    android:layout_gravity="end"
-                    android:backgroundTint="#FF5252"
-                    android:textColor="#FFFFFF"
-                    android:layout_marginTop="8dp"/>
-
-            </LinearLayout>
-
+                layout="@layout/custom_button_reverb"
+                android:visibility="gone"/>
 
             <include
                 android:id="@+id/button_cleantone"
-                layout="@layout/custom_button_cleantone"/>
-
-            <LinearLayout
-                android:id="@+id/dropdown_cleantone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"
-                android:layout_marginTop="8dp"
-                android:padding="16dp"
-                android:background="#242424"
-                android:elevation="4dp">
-
-                <!-- Audio Player (SeekBar + Play Button) -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageButton
-                        android:id="@+id/play_button_cleantone"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@raw/play_icon"
-                        android:background="@null"
-                        android:tint="#FFFFFF"/>
-
-                    <SeekBar
-                        android:id="@+id/seekbar_cleantone"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:max="100"
-                        android:progress="0"/>
-
-                </LinearLayout>
-
-                <!-- Add Button -->
-                <Button
-                    android:id="@+id/add_button_cleantone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add"
-                    android:layout_gravity="end"
-                    android:backgroundTint="#FF5252"
-                    android:textColor="#FFFFFF"
-                    android:layout_marginTop="8dp"/>
-
-            </LinearLayout>
+                layout="@layout/custom_button_cleantone"
+                android:visibility="gone"/>
 
             <include
                 android:id="@+id/button_distortion"
-                layout="@layout/custom_button_distortion"/>
-
-            <LinearLayout
-                android:id="@+id/dropdown_distortion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"
-                android:layout_marginTop="8dp"
-                android:padding="16dp"
-                android:background="#242424"
-                android:elevation="4dp">
-
-                <!-- Audio Player (SeekBar + Play Button) -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageButton
-                        android:id="@+id/play_button_distortion"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@raw/play_icon"
-                        android:background="@null"
-                        android:tint="#FFFFFF"/>
-
-                    <SeekBar
-                        android:id="@+id/seekbar_distortion"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:max="100"
-                        android:progress="0"/>
-
-                </LinearLayout>
-
-                <!-- Add Button -->
-                <Button
-                    android:id="@+id/add_button_distortion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add"
-                    android:layout_gravity="end"
-                    android:backgroundTint="#FF5252"
-                    android:textColor="#FFFFFF"
-                    android:layout_marginTop="8dp"/>
-
-            </LinearLayout>
+                layout="@layout/custom_button_distortion"
+                android:visibility="gone"/>
 
             <include
                 android:id="@+id/button_overdrive"
-                layout="@layout/custom_button_overdrive"/>
-
-            <LinearLayout
-                android:id="@+id/dropdown_overdrive"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"
-                android:layout_marginTop="8dp"
-                android:padding="16dp"
-                android:background="#242424"
-                android:elevation="4dp">
-
-                <!-- Audio Player (SeekBar + Play Button) -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageButton
-                        android:id="@+id/play_button_overdrive"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@raw/play_icon"
-                        android:background="@null"
-                        android:tint="#FFFFFF"/>
-
-                    <SeekBar
-                        android:id="@+id/seekbar_overdrive"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:max="100"
-                        android:progress="0"/>
-
-                </LinearLayout>
-
-                <!-- Add Button -->
-                <Button
-                    android:id="@+id/add_button_overdrive"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add"
-                    android:layout_gravity="end"
-                    android:backgroundTint="#FF5252"
-                    android:textColor="#FFFFFF"
-                    android:layout_marginTop="8dp"/>
-
-            </LinearLayout>
+                layout="@layout/custom_button_overdrive"
+                android:visibility="gone"/>
 
         </LinearLayout>
 
