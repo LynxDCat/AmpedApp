@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -42,6 +43,7 @@ public class LandingPageActivity extends AppCompatActivity {
 
         executorService = Executors.newSingleThreadExecutor();
         LinearLayout navAdd, navQueue, buttonDelay, buttonReverb, buttonCleantone, buttonDistortion, buttonOverdrive;
+        Button addButton, addButtonReverb, addButtonCleantone, addButtonDistortion, addButtonOverdrive;
 
         // NAVIGATION BAR
         // Navigation Items
@@ -72,7 +74,11 @@ public class LandingPageActivity extends AppCompatActivity {
         seekBarDistortion = findViewById(R.id.seekbar_distortion);
         seekBarOverdrive = findViewById(R.id.seekbar_overdrive);
 
-        Button addButton = findViewById(R.id.add_button);
+        addButton = findViewById(R.id.add_button);
+        addButtonReverb = findViewById(R.id.add_button_reverb);
+        addButtonCleantone = findViewById(R.id.add_button_cleantone);
+        addButtonDistortion = findViewById(R.id.add_button_distortion);
+        addButtonOverdrive = findViewById(R.id.add_button_overdrive);
 
         // Initialize separate MediaPlayers
         mediaPlayerDelay = MediaPlayer.create(this, R.raw.delay_sample);
@@ -87,17 +93,46 @@ public class LandingPageActivity extends AppCompatActivity {
         buttonDistortion.setOnClickListener(v -> toggleDropdown(dropdownDistortion));
         buttonOverdrive.setOnClickListener(v -> toggleDropdown(dropdownOverdrive));
 
-        addButton.setOnClickListener(v -> {
-            delayEnabled = true;
-            Toast.makeText(this, "Delay Effect Applied", Toast.LENGTH_SHORT).show();
-            dropdownDelay.setVisibility(View.GONE);
-        });
-
         playButton.setOnClickListener(v -> playPauseAudioDelay());
         playButtonReverb.setOnClickListener(v -> playPauseAudioReverb());
         playButtonCleantone.setOnClickListener(v -> playPauseAudioCleantone());
         playButtonDistortion.setOnClickListener(v -> playPauseAudioDistortion());
         playButtonOverdrive.setOnClickListener(v -> playPauseAudioOverdrive());
+
+        addButton.setOnClickListener(v -> {
+            Log.d("AddQueueButton","Delay add button Clicked");
+            Log.d("AddQueueButton","Delay Added to the Queue");
+            Toast.makeText(this, "Delay Added to the Queue", Toast.LENGTH_SHORT).show();
+            dropdownDelay.setVisibility(View.GONE);
+        });
+
+        addButtonReverb.setOnClickListener(v -> {
+            Log.d("AddQueueButton","Reverb add button Clicked");
+            Log.d("AddQueueButton","Reverb Added to the Queue");
+            Toast.makeText(this, "Reverb Added to the Queue", Toast.LENGTH_SHORT).show();
+            dropdownReverb.setVisibility(View.GONE);
+        });
+
+        addButtonCleantone.setOnClickListener(v -> {
+            Log.d("AddQueueButton","Cleantone add button Clicked");
+            Log.d("AddQueueButton","Cleantone Added to the Queue");
+            Toast.makeText(this, "Cleantone Added to the Queue", Toast.LENGTH_SHORT).show();
+            dropdownCleantone.setVisibility(View.GONE);
+        });
+
+        addButtonDistortion.setOnClickListener(v -> {
+            Log.d("AddQueueButton","Distortion add button Clicked");
+            Log.d("AddQueueButton","Distortion Added to the Queue");
+            Toast.makeText(this, "Distortion Added to the Queue", Toast.LENGTH_SHORT).show();
+            dropdownDistortion.setVisibility(View.GONE);
+        });
+
+        addButtonOverdrive.setOnClickListener(v -> {
+            Log.d("AddQueueButton","Overdrive add button Clicked");
+            Log.d("AddQueueButton","Overdrive Added to the Queue");
+            Toast.makeText(this, "Overdrive Added to the Queue", Toast.LENGTH_SHORT).show();
+            dropdownOverdrive.setVisibility(View.GONE);
+        });
 
         initializeSeekBarDelay();
         initializeSeekBarReverb();
