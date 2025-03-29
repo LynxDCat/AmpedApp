@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -8,7 +9,7 @@
     android:elevation="8dp">
 
     <LinearLayout
-        android:id="@+id/nav_add"
+        android:id="@+id/nav"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -21,7 +22,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@raw/music"
-            android:tint="#9E9E9E" />
+            app:tint="#9E9E9E" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,12 +43,14 @@
         android:focusable="true">
 
         <ImageView
+            android:id="@+id/queue_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@raw/queue_icon"
-            android:tint="#9E9E9E" />
+            app:tint="#9E9E9E" />
 
         <TextView
+            android:id="@+id/queue_icon_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Queue"
@@ -56,7 +59,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/nav_record"
+        android:id="@+id/nav_add"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -66,10 +69,19 @@
         android:focusable="true">
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/add_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@raw/add_icon"
-            android:tint="#FF5252" />
+            app:tint="#FF0000" />
+
+        <TextView
+            android:id="@+id/add_icon_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Effects"
+            android:textColor="#9E9E9E"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -80,13 +92,14 @@
         android:gravity="center"
         android:orientation="vertical"
         android:clickable="true"
-        android:focusable="true">
+        android:focusable="true"
+        app:tint="#9E9E9E">
 
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@raw/music"
-            android:tint="#9E9E9E" />
+            app:tint="#9E9E9E"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -104,13 +117,15 @@
         android:gravity="center"
         android:orientation="vertical"
         android:clickable="true"
-        android:focusable="true">
+        android:focusable="true"
+        app:tint="#9E9E9E">
 
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@raw/music"
-            android:tint="#9E9E9E" />
+            android:tint="#9E9E9E"
+            tools:ignore="UseAppTint" />
 
         <TextView
             android:layout_width="wrap_content"

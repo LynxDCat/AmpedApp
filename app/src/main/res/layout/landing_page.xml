@@ -13,7 +13,7 @@
         android:fontFamily="@font/poppins_regular"
         android:text="Create Tracks"
         android:textColor="@color/white"
-        android:textSize="24dp"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="48dp"
@@ -48,6 +48,7 @@
                 android:orientation="vertical"
                 android:visibility="gone"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:padding="16dp"
                 android:background="#242424"
                 android:elevation="4dp">
@@ -65,7 +66,7 @@
                         android:layout_height="48dp"
                         android:src="@raw/play_icon"
                         android:background="@null"
-                        android:tint="#FFFFFF"/>
+                        app:tint="#FFFFFF" />
 
                     <SeekBar
                         android:id="@+id/seekbar"
@@ -101,6 +102,7 @@
                 android:orientation="vertical"
                 android:visibility="gone"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:padding="16dp"
                 android:background="#242424"
                 android:elevation="4dp">
@@ -118,7 +120,7 @@
                         android:layout_height="48dp"
                         android:src="@raw/play_icon"
                         android:background="@null"
-                        android:tint="#FFFFFF"/>
+                        app:tint="#FFFFFF" />
 
                     <SeekBar
                         android:id="@+id/seekbar_reverb"
@@ -155,6 +157,7 @@
                 android:orientation="vertical"
                 android:visibility="gone"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:padding="16dp"
                 android:background="#242424"
                 android:elevation="4dp">
@@ -172,7 +175,7 @@
                         android:layout_height="48dp"
                         android:src="@raw/play_icon"
                         android:background="@null"
-                        android:tint="#FFFFFF"/>
+                        app:tint="#FFFFFF" />
 
                     <SeekBar
                         android:id="@+id/seekbar_cleantone"
@@ -208,6 +211,7 @@
                 android:orientation="vertical"
                 android:visibility="gone"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:padding="16dp"
                 android:background="#242424"
                 android:elevation="4dp">
@@ -225,7 +229,7 @@
                         android:layout_height="48dp"
                         android:src="@raw/play_icon"
                         android:background="@null"
-                        android:tint="#FFFFFF"/>
+                        app:tint="#FFFFFF" />
 
                     <SeekBar
                         android:id="@+id/seekbar_distortion"
@@ -261,6 +265,7 @@
                 android:orientation="vertical"
                 android:visibility="gone"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:padding="16dp"
                 android:background="#242424"
                 android:elevation="4dp">
@@ -278,7 +283,7 @@
                         android:layout_height="48dp"
                         android:src="@raw/play_icon"
                         android:background="@null"
-                        android:tint="#FFFFFF"/>
+                        app:tint="#FFFFFF" />
 
                     <SeekBar
                         android:id="@+id/seekbar_overdrive"
