@@ -21,4 +21,8 @@ public class EffectManager {
     public ArrayList<String> getSelectedEffects() {
         return selectedEffects;
     }
+
+    public void setSelectedEffects(ArrayList<String> effects) {
+        this.selectedEffects = effects;
+    }
 }

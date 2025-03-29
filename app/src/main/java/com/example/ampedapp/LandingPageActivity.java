@@ -2,6 +2,7 @@ package com.example.ampedapp;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,9 +10,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -28,15 +30,12 @@ public class LandingPageActivity extends AppCompatActivity {
     private ImageButton playButton, playButtonReverb, playButtonCleantone, playButtonDistortion, playButtonOverdrive;
     private SeekBar seekBarDelay, seekBarReverb, seekBarCleantone, seekBarDistortion, seekBarOverdrive;
     private MediaPlayer mediaPlayerDelay, mediaPlayerReverb,  mediaPlayerCleantone, mediaPlayerDistortion, mediaPlayerOverdrive;
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
     private boolean isPlayingDelay = false, isPlayingReverb = false, isPlayingCleantone = false, isPlayingDistortion = false, isPlayingOverdrive = false;
-    private boolean delayEnabled = false;
-    private int delayTimeMs = 300;
-    private float delayFeedback = 0.5f;
     private ExecutorService executorService;
     private Runnable updateSeekBarDelay, updateSeekBarReverb, updateSeekBarCleantone, updateSeekBarDistortion, updateSeekBarOverdrive;
 
-    private ArrayList<String> selectedEffects = new ArrayList<>();
+    private final ArrayList<String> selectedEffects = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +46,36 @@ public class LandingPageActivity extends AppCompatActivity {
         executorService = Executors.newSingleThreadExecutor();
         LinearLayout navAdd, navQueue, buttonDelay, buttonReverb, buttonCleantone, buttonDistortion, buttonOverdrive;
         Button addButton, addButtonReverb, addButtonCleantone, addButtonDistortion, addButtonOverdrive;
+        ImageView addIcon, queueIcon;
+        TextView addIconText, queueIconText;
 
         // NAVIGATION BAR
         // Navigation Items
         navAdd = findViewById(R.id.nav_add);
         navQueue = findViewById(R.id.nav_queue);
+        addIcon = findViewById(R.id.add_icon);
+        queueIcon = findViewById(R.id.queue_icon);
+        addIconText = findViewById(R.id.add_icon_text);
+        queueIconText = findViewById(R.id.queue_icon_text);
+
+        // Apply tint color to all icons permanently
+        int grayColor = Color.parseColor("#9E9E9E");
+
+        // Setting color for navbar ImageView
+        addIcon.setColorFilter(Color.parseColor("#FF0000"));
+        queueIcon.setColorFilter(grayColor);
+
+        // Setting color for navbar TextView
+        addIconText.setTextColor(Color.parseColor("#FF0000"));
+        queueIconText.setTextColor(grayColor);
+
         // Set click listeners
-        navAdd.setOnClickListener(v -> openActivity(LandingPageActivity.class));
-        navQueue.setOnClickListener(v -> openActivity(QueueActivity.class));
+        navAdd.setOnClickListener(v -> {
+            openActivity(LandingPageActivity.class);
+        });
+        navQueue.setOnClickListener(v -> {
+            openActivity(QueueActivity.class);
+        });
 
         buttonDelay = findViewById(R.id.button_delay);
         buttonReverb = findViewById(R.id.button_reverb);

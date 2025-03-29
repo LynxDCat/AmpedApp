@@ -13,7 +13,7 @@
         android:fontFamily="@font/poppins_regular"
         android:text="Queue"
         android:textColor="@color/white"
-        android:textSize="24dp"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="48dp"
@@ -25,7 +25,8 @@
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/Profile"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="In Queue">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,27 +39,27 @@
 
             <include
                 android:id="@+id/button_delay"
-                layout="@layout/custom_button_delay"
+                layout="@layout/custom_button_delay_queue"
                 android:visibility="gone"/>
 
             <include
                 android:id="@+id/button_reverb"
-                layout="@layout/custom_button_reverb"
+                layout="@layout/custom_button_reverb_queue"
                 android:visibility="gone"/>
 
             <include
                 android:id="@+id/button_cleantone"
-                layout="@layout/custom_button_cleantone"
+                layout="@layout/custom_button_cleantone_queue"
                 android:visibility="gone"/>
 
             <include
                 android:id="@+id/button_distortion"
-                layout="@layout/custom_button_distortion"
+                layout="@layout/custom_button_distortion_queue"
                 android:visibility="gone"/>
 
             <include
                 android:id="@+id/button_overdrive"
-                layout="@layout/custom_button_overdrive"
+                layout="@layout/custom_button_overdrive_queue"
                 android:visibility="gone"/>
 
         </LinearLayout>

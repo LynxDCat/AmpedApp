@@ -13,7 +13,7 @@
         android:fontFamily="@font/poppins_regular"
         android:text="Create Tracks"
         android:textColor="@color/white"
-        android:textSize="24dp"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="48dp"
@@ -66,7 +66,7 @@
                         android:layout_height="48dp"
                         android:src="@raw/play_icon"
                         android:background="@null"
-                        android:tint="#FFFFFF"/>
+                        app:tint="#FFFFFF" />
 
                     <SeekBar
                         android:id="@+id/seekbar"
@@ -120,7 +120,7 @@
                         android:layout_height="48dp"
                         android:src="@raw/play_icon"
                         android:background="@null"
-                        android:tint="#FFFFFF"/>
+                        app:tint="#FFFFFF" />
 
                     <SeekBar
                         android:id="@+id/seekbar_reverb"
@@ -175,7 +175,7 @@
                         android:layout_height="48dp"
                         android:src="@raw/play_icon"
                         android:background="@null"
-                        android:tint="#FFFFFF"/>
+                        app:tint="#FFFFFF" />
 
                     <SeekBar
                         android:id="@+id/seekbar_cleantone"
@@ -229,7 +229,7 @@
                         android:layout_height="48dp"
                         android:src="@raw/play_icon"
                         android:background="@null"
-                        android:tint="#FFFFFF"/>
+                        app:tint="#FFFFFF" />
 
                     <SeekBar
                         android:id="@+id/seekbar_distortion"
@@ -283,7 +283,7 @@
                         android:layout_height="48dp"
                         android:src="@raw/play_icon"
                         android:background="@null"
-                        android:tint="#FFFFFF"/>
+                        app:tint="#FFFFFF" />
 
                     <SeekBar
                         android:id="@+id/seekbar_overdrive"
