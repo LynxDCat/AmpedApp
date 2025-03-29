@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         Button login;
 
         // Intialization of Buttons
-        login = findViewById(R.id.LogIn);
+        login = findViewById(R.id.Guest);
 
         // Click listeners
         login.setOnClickListener(v -> {

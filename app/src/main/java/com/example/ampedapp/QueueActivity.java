@@ -24,24 +24,27 @@ public class QueueActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.queue_page);
 
-        LinearLayout navAdd, navQueue;
         ImageButton btnRemoveDelay, btnRemoveReverb, btnRemoveCleantone, btnRemoveDistortion, btnRemoveOverdrive;
-        ImageView addIcon, queueIcon;
-        TextView addIconText, queueIconText;
+        LinearLayout navAdd, navQueue, navSettings;
+        ImageView addIcon, queueIcon, settingsIcon;
+        TextView addIconText, queueIconText, settingsText;
 
         // NAVIGATION BAR
         // Navigation Items
         navAdd = findViewById(R.id.nav_add);
         navQueue = findViewById(R.id.nav_queue);
+        navSettings = findViewById(R.id.nav_settings);
         addIcon = findViewById(R.id.add_icon);
         queueIcon = findViewById(R.id.queue_icon);
+        settingsIcon = findViewById(R.id.settings_icon);
         addIconText = findViewById(R.id.add_icon_text);
         queueIconText = findViewById(R.id.queue_icon_text);
-        btnRemoveDelay = findViewById(R.id.remove_icon_delay);
-        btnRemoveReverb = findViewById(R.id.remove_icon_reverb);
-        btnRemoveCleantone = findViewById(R.id.remove_icon_cleantone);
-        btnRemoveDistortion = findViewById(R.id.remove_icon_distortion);
-        btnRemoveOverdrive = findViewById(R.id.remove_icon_overdrive);
+        settingsText = findViewById(R.id.settings_text);
+
+        // Set click listeners
+        navAdd.setOnClickListener(v -> openActivity(LandingPageActivity.class));
+        navQueue.setOnClickListener(v -> openActivity(QueueActivity.class));
+        navSettings.setOnClickListener(v -> openActivity(SettingsActivity.class));
 
         // Apply tint color to all icons permanently
         int grayColor = Color.parseColor("#9E9E9E");
@@ -49,18 +52,19 @@ public class QueueActivity extends AppCompatActivity {
         // Setting color for navbar ImageView
         addIcon.setColorFilter(grayColor);
         queueIcon.setColorFilter(Color.parseColor("#FF0000"));
+        settingsIcon.setColorFilter(grayColor);
 
         // Setting color for navbar TextView
         addIconText.setTextColor(grayColor);
         queueIconText.setTextColor(Color.parseColor("#FF0000"));
+        settingsText.setTextColor(grayColor);
 
-        // Set click listeners
-        navAdd.setOnClickListener(v -> {
-            openActivity(LandingPageActivity.class);
-        });
-        navQueue.setOnClickListener(v -> {
-            openActivity(QueueActivity.class);
-        });
+        // BUTTONS
+        btnRemoveDelay = findViewById(R.id.remove_icon_delay);
+        btnRemoveReverb = findViewById(R.id.remove_icon_reverb);
+        btnRemoveCleantone = findViewById(R.id.remove_icon_cleantone);
+        btnRemoveDistortion = findViewById(R.id.remove_icon_distortion);
+        btnRemoveOverdrive = findViewById(R.id.remove_icon_overdrive);
 
         btnRemoveDelay.setOnClickListener(v -> {
             ArrayList<String> selectedEffects = EffectManager.getInstance().getSelectedEffects();
