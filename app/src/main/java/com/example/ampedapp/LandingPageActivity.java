@@ -44,19 +44,23 @@ public class LandingPageActivity extends AppCompatActivity {
         setContentView(R.layout.landing_page);
 
         executorService = Executors.newSingleThreadExecutor();
-        LinearLayout navAdd, navQueue, buttonDelay, buttonReverb, buttonCleantone, buttonDistortion, buttonOverdrive;
+        LinearLayout buttonDelay, buttonReverb, buttonCleantone, buttonDistortion, buttonOverdrive;
         Button addButton, addButtonReverb, addButtonCleantone, addButtonDistortion, addButtonOverdrive;
-        ImageView addIcon, queueIcon;
-        TextView addIconText, queueIconText;
+        LinearLayout navAdd, navQueue, navSettings;
+        ImageView addIcon, queueIcon, settingsIcon;
+        TextView addIconText, queueIconText, settingsText;
 
         // NAVIGATION BAR
         // Navigation Items
         navAdd = findViewById(R.id.nav_add);
         navQueue = findViewById(R.id.nav_queue);
+        navSettings = findViewById(R.id.nav_settings);
         addIcon = findViewById(R.id.add_icon);
         queueIcon = findViewById(R.id.queue_icon);
+        settingsIcon = findViewById(R.id.settings_icon);
         addIconText = findViewById(R.id.add_icon_text);
         queueIconText = findViewById(R.id.queue_icon_text);
+        settingsText = findViewById(R.id.settings_text);
 
         // Apply tint color to all icons permanently
         int grayColor = Color.parseColor("#9E9E9E");
@@ -64,18 +68,17 @@ public class LandingPageActivity extends AppCompatActivity {
         // Setting color for navbar ImageView
         addIcon.setColorFilter(Color.parseColor("#FF0000"));
         queueIcon.setColorFilter(grayColor);
+        settingsIcon.setColorFilter(grayColor);
 
         // Setting color for navbar TextView
         addIconText.setTextColor(Color.parseColor("#FF0000"));
         queueIconText.setTextColor(grayColor);
+        settingsText.setTextColor(grayColor);
 
         // Set click listeners
-        navAdd.setOnClickListener(v -> {
-            openActivity(LandingPageActivity.class);
-        });
-        navQueue.setOnClickListener(v -> {
-            openActivity(QueueActivity.class);
-        });
+        navAdd.setOnClickListener(v -> openActivity(LandingPageActivity.class));
+        navQueue.setOnClickListener(v -> openActivity(QueueActivity.class));
+        navSettings.setOnClickListener(v -> openActivity(SettingsActivity.class));
 
         buttonDelay = findViewById(R.id.button_delay);
         buttonReverb = findViewById(R.id.button_reverb);

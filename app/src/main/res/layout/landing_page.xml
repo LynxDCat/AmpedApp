@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#16171B"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -20,52 +21,55 @@
         android:layout_marginStart="16dp" />
 
     <!-- ScrollView with Proper Constraints -->
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Profile"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
             android:paddingLeft="32dp"
-            android:paddingRight="32dp">
+            android:paddingTop="16dp"
+            android:paddingRight="32dp"
+            android:paddingBottom="16dp">
 
             <include
                 android:id="@+id/button_delay"
-                layout="@layout/custom_button_delay"/>
+                layout="@layout/custom_button_delay" />
 
             <!-- Dropdown Layout for Delay -->
             <LinearLayout
                 android:id="@+id/dropdown_delay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:padding="16dp"
                 android:background="#242424"
-                android:elevation="4dp">
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:visibility="gone">
 
                 <!-- Audio Player (SeekBar + Play Button) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <ImageButton
                         android:id="@+id/play_button"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:src="@raw/play_icon"
                         android:background="@null"
+                        android:src="@raw/play_icon"
                         app:tint="#FFFFFF" />
 
                     <SeekBar
@@ -74,7 +78,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:max="100"
-                        android:progress="0"/>
+                        android:progress="0" />
 
                 </LinearLayout>
 
@@ -83,43 +87,43 @@
                     android:id="@+id/add_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Add"
                     android:layout_gravity="end"
+                    android:layout_marginTop="8dp"
                     android:backgroundTint="#FF5252"
-                    android:textColor="#FFFFFF"
-                    android:layout_marginTop="8dp"/>
+                    android:text="Add"
+                    android:textColor="#FFFFFF" />
 
             </LinearLayout>
 
             <include
                 android:id="@+id/button_reverb"
-                layout="@layout/custom_button_reverb"/>
+                layout="@layout/custom_button_reverb" />
 
             <LinearLayout
                 android:id="@+id/dropdown_reverb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:padding="16dp"
                 android:background="#242424"
-                android:elevation="4dp">
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:visibility="gone">
 
                 <!-- Audio Player (SeekBar + Play Button) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <ImageButton
                         android:id="@+id/play_button_reverb"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:src="@raw/play_icon"
                         android:background="@null"
+                        android:src="@raw/play_icon"
                         app:tint="#FFFFFF" />
 
                     <SeekBar
@@ -128,7 +132,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:max="100"
-                        android:progress="0"/>
+                        android:progress="0" />
 
                 </LinearLayout>
 
@@ -137,44 +141,44 @@
                     android:id="@+id/add_button_reverb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Add"
                     android:layout_gravity="end"
+                    android:layout_marginTop="8dp"
                     android:backgroundTint="#FF5252"
-                    android:textColor="#FFFFFF"
-                    android:layout_marginTop="8dp"/>
+                    android:text="Add"
+                    android:textColor="#FFFFFF" />
 
             </LinearLayout>
 
 
             <include
                 android:id="@+id/button_cleantone"
-                layout="@layout/custom_button_cleantone"/>
+                layout="@layout/custom_button_cleantone" />
 
             <LinearLayout
                 android:id="@+id/dropdown_cleantone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:padding="16dp"
                 android:background="#242424"
-                android:elevation="4dp">
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:visibility="gone">
 
                 <!-- Audio Player (SeekBar + Play Button) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <ImageButton
                         android:id="@+id/play_button_cleantone"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:src="@raw/play_icon"
                         android:background="@null"
+                        android:src="@raw/play_icon"
                         app:tint="#FFFFFF" />
 
                     <SeekBar
@@ -183,7 +187,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:max="100"
-                        android:progress="0"/>
+                        android:progress="0" />
 
                 </LinearLayout>
 
@@ -192,43 +196,43 @@
                     android:id="@+id/add_button_cleantone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Add"
                     android:layout_gravity="end"
+                    android:layout_marginTop="8dp"
                     android:backgroundTint="#FF5252"
-                    android:textColor="#FFFFFF"
-                    android:layout_marginTop="8dp"/>
+                    android:text="Add"
+                    android:textColor="#FFFFFF" />
 
             </LinearLayout>
 
             <include
                 android:id="@+id/button_distortion"
-                layout="@layout/custom_button_distortion"/>
+                layout="@layout/custom_button_distortion" />
 
             <LinearLayout
                 android:id="@+id/dropdown_distortion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:padding="16dp"
                 android:background="#242424"
-                android:elevation="4dp">
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:visibility="gone">
 
                 <!-- Audio Player (SeekBar + Play Button) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <ImageButton
                         android:id="@+id/play_button_distortion"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:src="@raw/play_icon"
                         android:background="@null"
+                        android:src="@raw/play_icon"
                         app:tint="#FFFFFF" />
 
                     <SeekBar
@@ -237,7 +241,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:max="100"
-                        android:progress="0"/>
+                        android:progress="0" />
 
                 </LinearLayout>
 
@@ -246,43 +250,43 @@
                     android:id="@+id/add_button_distortion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Add"
                     android:layout_gravity="end"
+                    android:layout_marginTop="8dp"
                     android:backgroundTint="#FF5252"
-                    android:textColor="#FFFFFF"
-                    android:layout_marginTop="8dp"/>
+                    android:text="Add"
+                    android:textColor="#FFFFFF" />
 
             </LinearLayout>
 
             <include
                 android:id="@+id/button_overdrive"
-                layout="@layout/custom_button_overdrive"/>
+                layout="@layout/custom_button_overdrive" />
 
             <LinearLayout
                 android:id="@+id/dropdown_overdrive"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:padding="16dp"
                 android:background="#242424"
-                android:elevation="4dp">
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:visibility="gone">
 
                 <!-- Audio Player (SeekBar + Play Button) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <ImageButton
                         android:id="@+id/play_button_overdrive"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:src="@raw/play_icon"
                         android:background="@null"
+                        android:src="@raw/play_icon"
                         app:tint="#FFFFFF" />
 
                     <SeekBar
@@ -291,7 +295,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:max="100"
-                        android:progress="0"/>
+                        android:progress="0" />
 
                 </LinearLayout>
 
@@ -300,11 +304,11 @@
                     android:id="@+id/add_button_overdrive"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Add"
                     android:layout_gravity="end"
+                    android:layout_marginTop="8dp"
                     android:backgroundTint="#FF5252"
-                    android:textColor="#FFFFFF"
-                    android:layout_marginTop="8dp"/>
+                    android:text="Add"
+                    android:textColor="#FFFFFF" />
 
             </LinearLayout>
 

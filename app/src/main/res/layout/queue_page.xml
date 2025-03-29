@@ -66,6 +66,15 @@
 
     </ScrollView>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload"
+        android:backgroundTint="#FF0000"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="16dp"/>
+
     <include
         android:id="@+id/bottomNav"
         layout="@layout/bottom_navbar"

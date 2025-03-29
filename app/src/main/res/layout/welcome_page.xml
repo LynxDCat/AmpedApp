@@ -6,6 +6,68 @@
     android:layout_height="match_parent">
 
     <Button
+        android:id="@+id/Guest"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Continue as guest"
+        style="@style/RedButton"
+        app:layout_constraintBottom_toTopOf="@+id/LogIn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:paddingVertical="16dp"
+        android:layout_marginBottom="16dp"/>
+
+    <LinearLayout
+        android:id="@+id/separatorLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Guest"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="3dp"
+            android:src="@raw/hline"
+            android:layout_gravity="center_vertical"
+            app:tint="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Login"
+            android:layout_gravity="center_vertical"/>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="3dp"
+            android:src="@raw/hline"
+            android:layout_gravity="center_vertical"
+            app:tint="@color/white" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/LogIn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        style="@style/RedButton"
+        app:layout_constraintBottom_toTopOf="@+id/SignUp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:paddingVertical="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <Button
         android:id="@+id/SignUp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -18,22 +80,7 @@
         android:layout_marginEnd="16dp"
         android:paddingVertical="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="64dp"
-        android:visibility="gone"/>
-
-    <Button
-        android:id="@+id/LogIn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Start"
-        style="@style/RedButton"
-        app:layout_constraintBottom_toTopOf="@+id/SignUp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:paddingVertical="16dp"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginBottom="64dp"/>
 
     <TextView
         android:id="@+id/WelcomeText2"
@@ -41,7 +88,7 @@
         android:layout_height="wrap_content"
         android:text="Lorem Ipsum"
         android:fontFamily="@font/roboto_regular"
-        app:layout_constraintBottom_toTopOf="@+id/LogIn"
+        app:layout_constraintBottom_toTopOf="@+id/Guest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginBottom="16dp"/>
