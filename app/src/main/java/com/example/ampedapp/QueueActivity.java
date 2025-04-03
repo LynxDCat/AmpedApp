@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,9 +14,13 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class QueueActivity extends AppCompatActivity {
 
+    private final HashMap<String, Integer> effectLayouts = new HashMap<>(); // Map effect names to layouts
+    private LinearLayout effectContainer;
+    private EffectManager effectManager;
     private final ArrayList<String> selectedEffects = new ArrayList<>();
 
     @Override
@@ -24,7 +29,9 @@ public class QueueActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.queue_page);
 
-        ImageButton btnRemoveDelay, btnRemoveReverb, btnRemoveCleantone, btnRemoveDistortion, btnRemoveOverdrive;
+        effectContainer = findViewById(R.id.effectContainer);
+        effectManager = EffectManager.getInstance();
+
         LinearLayout navAdd, navQueue, navSettings;
         ImageView addIcon, queueIcon, settingsIcon;
         TextView addIconText, queueIconText, settingsText;
@@ -41,11 +48,6 @@ public class QueueActivity extends AppCompatActivity {
         queueIconText = findViewById(R.id.queue_icon_text);
         settingsText = findViewById(R.id.settings_text);
 
-        // Set click listeners
-        navAdd.setOnClickListener(v -> openActivity(LandingPageActivity.class));
-        navQueue.setOnClickListener(v -> openActivity(QueueActivity.class));
-        navSettings.setOnClickListener(v -> openActivity(SettingsActivity.class));
-
         // Apply tint color to all icons permanently
         int grayColor = Color.parseColor("#9E9E9E");
 
@@ -59,101 +61,65 @@ public class QueueActivity extends AppCompatActivity {
         queueIconText.setTextColor(Color.parseColor("#FF0000"));
         settingsText.setTextColor(grayColor);
 
-        // BUTTONS
-        btnRemoveDelay = findViewById(R.id.remove_icon_delay);
-        btnRemoveReverb = findViewById(R.id.remove_icon_reverb);
-        btnRemoveCleantone = findViewById(R.id.remove_icon_cleantone);
-        btnRemoveDistortion = findViewById(R.id.remove_icon_distortion);
-        btnRemoveOverdrive = findViewById(R.id.remove_icon_overdrive);
+        // Set click listeners
+        navAdd.setOnClickListener(v -> openActivity(LandingPageActivity.class));
+        navQueue.setOnClickListener(v -> openActivity(QueueActivity.class));
+        navSettings.setOnClickListener(v -> openActivity(SettingsActivity.class));
 
-        btnRemoveDelay.setOnClickListener(v -> {
-            ArrayList<String> selectedEffects = EffectManager.getInstance().getSelectedEffects();
-
-            if (selectedEffects.contains("Delay")) {
-                selectedEffects.remove("Delay");
-                EffectManager.getInstance().setSelectedEffects(selectedEffects);
-                findViewById(R.id.button_delay).setVisibility(View.GONE);
-            }
-        });
-
-        btnRemoveReverb.setOnClickListener(v -> {
-            ArrayList<String> selectedEffects = EffectManager.getInstance().getSelectedEffects();
-
-            if (selectedEffects.contains("Reverb")) {
-                selectedEffects.remove("Reverb");
-                EffectManager.getInstance().setSelectedEffects(selectedEffects);
-                findViewById(R.id.button_reverb).setVisibility(View.GONE);
-            }
-        });
-
-        btnRemoveCleantone.setOnClickListener(v -> {
-            ArrayList<String> selectedEffects = EffectManager.getInstance().getSelectedEffects();
-
-            if (selectedEffects.contains("Cleantone")) {
-                selectedEffects.remove("Cleantone");
-                EffectManager.getInstance().setSelectedEffects(selectedEffects);
-                findViewById(R.id.button_cleantone).setVisibility(View.GONE);
-            }
-        });
-
-        btnRemoveDistortion.setOnClickListener(v -> {
-            ArrayList<String> selectedEffects = EffectManager.getInstance().getSelectedEffects();
-
-            if (selectedEffects.contains("Distortion")) {
-                selectedEffects.remove("Distortion");
-                EffectManager.getInstance().setSelectedEffects(selectedEffects);
-                findViewById(R.id.button_distortion).setVisibility(View.GONE);
-            }
-        });
-
-        btnRemoveOverdrive.setOnClickListener(v -> {
-            ArrayList<String> selectedEffects = EffectManager.getInstance().getSelectedEffects();
-
-            if (selectedEffects.contains("Overdrive")) {
-                selectedEffects.remove("Overdrive");
-                EffectManager.getInstance().setSelectedEffects(selectedEffects);
-                findViewById(R.id.button_overdrive).setVisibility(View.GONE);
-            }
-        });
-
+        // Initialize effect layout mapping
+        effectLayouts.put("Delay", R.layout.custom_button_delay_queue);
+        effectLayouts.put("Reverb", R.layout.custom_button_reverb_queue);
+        effectLayouts.put("Cleantone", R.layout.custom_button_cleantone_queue);
+        effectLayouts.put("Distortion", R.layout.custom_button_distortion_queue);
+        effectLayouts.put("Overdrive", R.layout.custom_button_overdrive_queue);
 
         // Change status bar color
         Window window = getWindow();
         window.setStatusBarColor(Color.parseColor("#16171B"));
 
-        // Get data from intent
-        ArrayList<String> selectedEffects = EffectManager.getInstance().getSelectedEffects();
-
-        if (selectedEffects != null) {
-
-            for(int i = 0; i < selectedEffects.size(); i++){
-                switch (selectedEffects.get(i)){
-                    case "Delay": {
-                        findViewById(R.id.button_delay).setVisibility(View.VISIBLE);
-                        break;
-                    } case "Reverb": {
-                        findViewById(R.id.button_reverb).setVisibility(View.VISIBLE);
-                        break;
-                    } case "Cleantone": {
-                        findViewById(R.id.button_cleantone).setVisibility(View.VISIBLE);
-                        break;
-                    } case "Distortion": {
-                        findViewById(R.id.button_distortion).setVisibility(View.VISIBLE);
-                        break;
-                    } case "Overdrive": {
-                        findViewById(R.id.button_overdrive).setVisibility(View.VISIBLE);
-                        break;
-                    } default: {
-                        break;
-                    }
-                }
-            }
-        }
+        // Display effects in queue
+        displayEffects();
     }
 
     private void openActivity(Class<?> activityClass) {
         Intent intent = new Intent(QueueActivity.this, activityClass);
         intent.putStringArrayListExtra("selectedEffects", selectedEffects);
         startActivity(intent);
+    }
+
+    private void displayEffects() {
+        effectContainer.removeAllViews(); // Clear previous views
+        ArrayList<String> selectedEffects = effectManager.getSelectedEffects();
+
+        for (String effect : selectedEffects) {
+            if (effectLayouts.containsKey(effect)) {
+                View effectView = getLayoutInflater().inflate(effectLayouts.get(effect), effectContainer, false);
+
+                // Find "X" button in the effect layout
+                ImageButton removeButton = effectView.findViewById(R.id.removeEffectButton);
+                if (removeButton != null) {
+                    removeButton.setOnClickListener(v -> removeEffect(effect, effectView));
+                }
+
+                effectContainer.addView(effectView);
+            }
+        }
+    }
+
+    private void removeEffect(String effect, View effectView) {
+        // Remove effect from EffectManager
+        effectManager.removeEffect(effect);
+
+        // Remove effect view from UI
+        effectContainer.removeView(effectView);
+
+        // Update the file (if applicable)
+        processAudioFileAfterRemoval();
+    }
+
+    private void processAudioFileAfterRemoval() {
+        // TODO: Implement logic to update the audio file (e.g., reprocess with remaining effects)
+        // Example:
+        // effectManager.applyEffectsToAudio();
     }
 }
