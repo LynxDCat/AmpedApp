@@ -75,15 +75,12 @@
 
         <!-- Remove Icon -->
         <ImageButton
-            android:id="@+id/remove_icon_delay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@raw/remove_icon"
-            android:scaleType="centerInside"
-            android:layout_gravity="center"
-            app:tint="@color/white"
-            android:backgroundTint="#202125"
-            android:contentDescription="Remove Button"/>
+            android:id="@+id/removeEffectButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_close"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Remove Effect"/>
     </FrameLayout>
 
 </LinearLayout>
