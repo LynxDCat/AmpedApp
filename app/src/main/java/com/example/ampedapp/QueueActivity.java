@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -32,20 +31,25 @@ public class QueueActivity extends AppCompatActivity {
         effectContainer = findViewById(R.id.effectContainer);
         effectManager = EffectManager.getInstance();
 
-        LinearLayout navAdd, navQueue, navSettings;
-        ImageView addIcon, queueIcon, settingsIcon;
-        TextView addIconText, queueIconText, settingsText;
+        LinearLayout navAdd, navQueue, navPreset, navSettings;
+        ImageView addIcon, queueIcon, presetIcon, settingsIcon;
+        TextView addIconText, queueIconText, presetText, settingsText;
 
         // NAVIGATION BAR
         // Navigation Items
         navAdd = findViewById(R.id.nav_add);
         navQueue = findViewById(R.id.nav_queue);
+        navPreset = findViewById(R.id.nav_preset);
         navSettings = findViewById(R.id.nav_settings);
+
         addIcon = findViewById(R.id.add_icon);
         queueIcon = findViewById(R.id.queue_icon);
+        presetIcon = findViewById(R.id.preset_icon);
         settingsIcon = findViewById(R.id.settings_icon);
+
         addIconText = findViewById(R.id.add_icon_text);
         queueIconText = findViewById(R.id.queue_icon_text);
+        presetText = findViewById(R.id.preset_icon_text);
         settingsText = findViewById(R.id.settings_text);
 
         // Apply tint color to all icons permanently
@@ -54,17 +58,21 @@ public class QueueActivity extends AppCompatActivity {
         // Setting color for navbar ImageView
         addIcon.setColorFilter(grayColor);
         queueIcon.setColorFilter(Color.parseColor("#FF0000"));
+        presetIcon.setColorFilter(grayColor);
         settingsIcon.setColorFilter(grayColor);
 
         // Setting color for navbar TextView
         addIconText.setTextColor(grayColor);
         queueIconText.setTextColor(Color.parseColor("#FF0000"));
+        presetText.setTextColor(grayColor);
         settingsText.setTextColor(grayColor);
 
         // Set click listeners
         navAdd.setOnClickListener(v -> openActivity(LandingPageActivity.class));
         navQueue.setOnClickListener(v -> openActivity(QueueActivity.class));
+        navPreset.setOnClickListener(v -> openActivity(PresetActivity.class));
         navSettings.setOnClickListener(v -> openActivity(SettingsActivity.class));
+
 
         // Initialize effect layout mapping
         effectLayouts.put("Delay", R.layout.custom_button_delay_queue);
@@ -73,9 +81,17 @@ public class QueueActivity extends AppCompatActivity {
         effectLayouts.put("Distortion", R.layout.custom_button_distortion_queue);
         effectLayouts.put("Overdrive", R.layout.custom_button_overdrive_queue);
 
-        // Change status bar color
-        Window window = getWindow();
-        window.setStatusBarColor(Color.parseColor("#16171B"));
+        // Buttons
+        Button clearBtn = findViewById(R.id.clearButton);
+        Button savePresetButton = findViewById(R.id.saveButton);
+
+        clearBtn.setOnClickListener(v -> {
+            effectManager.clearEffects();
+            effectContainer.removeAllViews();
+        });
+
+        savePresetButton.setOnClickListener(v -> showSavePresetDialog());
+
 
         // Display effects in queue
         displayEffects();
@@ -117,9 +133,40 @@ public class QueueActivity extends AppCompatActivity {
         processAudioFileAfterRemoval();
     }
 
+    private void showSavePresetDialog() {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle("Save Preset");
+
+        final android.widget.EditText input = new android.widget.EditText(this);
+        input.setHint("Enter preset name");
+        builder.setView(input);
+
+        builder.setPositiveButton("Save", (dialog, which) -> {
+            String presetName = input.getText().toString().trim();
+            if (!presetName.isEmpty()) {
+                ArrayList<String> selectedEffects = effectManager.getSelectedEffects();
+                String effectsCsv = android.text.TextUtils.join(",", selectedEffects);
+
+                PresetDatabaseHelper dbHelper = new PresetDatabaseHelper(this);
+                boolean success = dbHelper.savePreset(presetName, effectsCsv);
+
+                String message = success ? "Preset saved!" : "Failed to save preset.";
+                android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_SHORT).show();
+            } else {
+                android.widget.Toast.makeText(this, "Preset name cannot be empty.", android.widget.Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
+
+
     private void processAudioFileAfterRemoval() {
         // TODO: Implement logic to update the audio file (e.g., reprocess with remaining effects)
         // Example:
         // effectManager.applyEffectsToAudio();
     }
+
 }
