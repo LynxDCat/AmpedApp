@@ -3,20 +3,25 @@ package com.example.ampedapp;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import java.util.ArrayList;
+import java.util.List;
 
-public class SettingsActivity extends AppCompatActivity {
+public class PresetActivity extends AppCompatActivity {
 
-    @Override   
+    private LinearLayout presetContainer;
+    private EffectManager effectManager;
+    private PresetDatabaseHelper dbHelper;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.settings_page);
+        setContentView(R.layout.preset_page);
 
         LinearLayout navAdd, navQueue, navPreset, navSettings;
         ImageView addIcon, queueIcon, presetIcon, settingsIcon;
@@ -51,18 +56,52 @@ public class SettingsActivity extends AppCompatActivity {
         // Setting color for navbar ImageView
         addIcon.setColorFilter(grayColor);
         queueIcon.setColorFilter(grayColor);
-        presetIcon.setColorFilter(grayColor);
-        settingsIcon.setColorFilter(Color.parseColor("#FF0000"));
+        presetIcon.setColorFilter(Color.parseColor("#FF0000"));
+        settingsIcon.setColorFilter(grayColor);
 
         // Setting color for navbar TextView
         addIconText.setTextColor(grayColor);
         queueIconText.setTextColor(grayColor);
-        presetText.setTextColor(grayColor);
-        settingsText.setTextColor(Color.parseColor("#FF0000"));
+        presetText.setTextColor(Color.parseColor("#FF0000"));
+        settingsText.setTextColor(grayColor);
+
+        presetContainer = findViewById(R.id.presetContainer);
+        effectManager = EffectManager.getInstance();
+        dbHelper = new PresetDatabaseHelper(this);
+
+        loadPresets();
+    }
+
+    private void loadPresets() {
+        ArrayList<Preset> presets = dbHelper.getAllPresets();
+
+        for (Preset preset : presets) {
+            View presetView = getLayoutInflater().inflate(R.layout.preset_item_layout, presetContainer, false);
+
+            TextView presetName = presetView.findViewById(R.id.presetNameText);
+            Button useButton = presetView.findViewById(R.id.usePresetButton);
+
+            presetName.setText(preset.getName());
+
+            useButton.setOnClickListener(v -> {
+                effectManager.setSelectedEffects(new ArrayList<>(preset.getEffects())); // ✅ Fix
+                Intent intent = new Intent(PresetActivity.this, QueueActivity.class);
+                startActivity(intent);
+            });
+
+
+            presetContainer.addView(presetView);
+        }
+    }
+
+    private void applyEffectsToQueue(List<String> effects) {
+        EffectManager.getInstance().setSelectedEffects(new ArrayList<>(effects));
+        Intent intent = new Intent(PresetActivity.this, QueueActivity.class);
+        startActivity(intent);
     }
 
     private void openActivity(Class<?> activityClass) {
-        Intent intent = new Intent(SettingsActivity.this, activityClass);
+        Intent intent = new Intent(PresetActivity.this, activityClass);
         startActivity(intent);
     }
 }

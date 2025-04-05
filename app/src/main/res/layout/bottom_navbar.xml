@@ -85,7 +85,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/nav_tracks"
+        android:id="@+id/nav_preset"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -96,15 +96,17 @@
         app:tint="#9E9E9E">
 
         <ImageView
+            android:id="@+id/preset_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@raw/music"
             app:tint="#9E9E9E"/>
 
         <TextView
+            android:id="@+id/preset_icon_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My Tracks"
+            android:text="My Presets"
             android:textColor="#9E9E9E"
             android:textSize="12sp" />
     </LinearLayout>
