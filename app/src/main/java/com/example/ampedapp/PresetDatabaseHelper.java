@@ -63,8 +63,14 @@ public class PresetDatabaseHelper extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        db.close(); // Good practice
+        db.close();
         return presetList;
     }
 
+    public boolean deletePreset(String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsDeleted = db.delete("presets", "name = ?", new String[]{name});
+        db.close();
+        return rowsDeleted > 0;
+    }
 }

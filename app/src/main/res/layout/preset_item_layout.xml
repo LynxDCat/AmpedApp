@@ -23,5 +23,16 @@
         android:layout_height="wrap_content"
         android:text="Use"
         android:backgroundTint="#FF0000"
-        android:textColor="#FFFFFF" />
+        android:textColor="#FFFFFF"
+        android:layout_marginRight="8dp"/>
+
+    <ImageButton
+        android:id="@+id/removeToDBButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_close"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Remove Effect"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="16dp"/>
 </LinearLayout>
