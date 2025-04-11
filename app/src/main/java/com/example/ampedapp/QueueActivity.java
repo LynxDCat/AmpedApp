@@ -1,8 +1,14 @@
 package com.example.ampedapp;
 
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,10 +19,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class QueueActivity extends AppCompatActivity {
 
@@ -27,8 +40,13 @@ public class QueueActivity extends AppCompatActivity {
     private final ArrayList<String> selectedEffects = new ArrayList<>();
     private boolean isPlaying;
     private int currentEffectIndex;
-
+    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothSocket bluetoothSocket;
+    private BluetoothDevice esp32Device;
+    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private ArrayList<String> effectsList = new ArrayList<>();
+    private static final int REQUEST_ENABLE_BT = 1;
+    private static final int REQUEST_BLUETOOTH_PERMISSION = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +58,11 @@ public class QueueActivity extends AppCompatActivity {
         effectManager = EffectManager.getInstance();
 
         loadPlayerState();
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        if (bluetoothAdapter == null) {
+            Toast.makeText(this, "Bluetooth not supported on this device", Toast.LENGTH_SHORT).show();
+        }
 
         ImageView playPauseBtn, prevBtn, nextBtn;
 
@@ -84,6 +107,7 @@ public class QueueActivity extends AppCompatActivity {
 
         Button clearBtn = findViewById(R.id.clearButton);
         Button savePresetButton = findViewById(R.id.saveButton);
+        Button uploadButton = findViewById(R.id.uploadButton);
         playPauseBtn = findViewById(R.id.playPauseButton);
         prevBtn = findViewById(R.id.prevButton);
         nextBtn = findViewById(R.id.nextButton);
@@ -97,6 +121,28 @@ public class QueueActivity extends AppCompatActivity {
             isPlaying = false;
             savePlayerState();
         });
+
+        uploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                connectToESP32();
+                /*if (bluetoothSocket != null && bluetoothSocket.isConnected()) {
+                    try {
+                        String jsonData = "{\"command\": \"blink\", \"value\": \"500\"}";
+                        OutputStream outputStream = bluetoothSocket.getOutputStream();
+                        outputStream.write(jsonData.getBytes());
+                        outputStream.flush();
+                        Toast.makeText(getApplicationContext(), "Data sent to ESP32", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Failed to send data", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Bluetooth not connected to ESP32", Toast.LENGTH_SHORT).show();
+                }*/
+            }
+        });
+
 
         playPauseBtn.setOnClickListener(v -> togglePlayPause());
         prevBtn.setOnClickListener(v -> playPreviousEffect());
@@ -147,6 +193,68 @@ public class QueueActivity extends AppCompatActivity {
             }
         }
     }
+
+    public void connectToESP32() {
+        if (bluetoothAdapter.isEnabled()) {
+            // Replace with the MAC address of your ESP32 device
+            String esp32Address = "EC:64:C9:5E:CD:D6"; // Replace with your ESP32's Bluetooth address
+            esp32Device = bluetoothAdapter.getRemoteDevice(esp32Address);
+
+            new Thread(new Runnable() {
+                @RequiresPermission(android.Manifest.permission.BLUETOOTH_CONNECT)
+                @Override
+                public void run() {
+                    try {
+                        bluetoothSocket = esp32Device.createRfcommSocketToServiceRecord(MY_UUID);
+                        bluetoothSocket.connect();
+
+                        // If connection is successful, display Toast
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), "Connected to ESP32", Toast.LENGTH_SHORT).show();
+                                sendDataToESP32();
+                            }
+                        });
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        // If connection fails, display Toast
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), "Connection Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            }).start();
+        } else {
+            Toast.makeText(this, "Bluetooth is not enabled", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void sendDataToESP32() {
+        try {
+            if (bluetoothSocket != null && bluetoothSocket.isConnected()) {
+                String jsonData = "{\"command\": \"blink\", \"value\": \"500\"}";
+                OutputStream outputStream = bluetoothSocket.getOutputStream();
+
+                // Write the data to the OutputStream
+                outputStream.write(jsonData.getBytes(StandardCharsets.UTF_8));
+                outputStream.flush();
+
+                // Notify user that data has been sent
+                Toast.makeText(getApplicationContext(), "Data sent to ESP32", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Bluetooth not connected to ESP32", Toast.LENGTH_SHORT).show();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Failed to send data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 
     private void removeEffect(String effect, View effectView) {
         effectManager.removeEffect(effect);
