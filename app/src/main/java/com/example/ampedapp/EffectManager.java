@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public class EffectManager {
     private static final EffectManager instance = new EffectManager();
     private final ArrayList<String> selectedEffects = new ArrayList<>();
+    private int currentPlayingIndex = -1;
+    private boolean isPlaying = false;
 
     private EffectManager() { } // Private constructor
 
@@ -35,6 +37,22 @@ public class EffectManager {
     // Optional: Clear all effects
     public void clearEffects() {
         selectedEffects.clear();
+    }
+
+    public int getCurrentPlayingIndex() {
+        return currentPlayingIndex;
+    }
+
+    public void setCurrentPlayingIndex(int index) {
+        this.currentPlayingIndex = index;
+    }
+
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    public void setPlaying(boolean playing) {
+        this.isPlaying = playing;
     }
 
 

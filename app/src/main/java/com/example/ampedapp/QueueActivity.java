@@ -25,8 +25,9 @@ public class QueueActivity extends AppCompatActivity {
     private EffectManager effectManager;
 
     private final ArrayList<String> selectedEffects = new ArrayList<>();
-    private boolean isPlaying = false;
-    private int currentEffectIndex = 0;
+    private boolean isPlaying;
+    private int currentEffectIndex;
+
     private ArrayList<String> effectsList = new ArrayList<>();
 
     @Override
@@ -37,6 +38,8 @@ public class QueueActivity extends AppCompatActivity {
 
         effectContainer = findViewById(R.id.effectContainer);
         effectManager = EffectManager.getInstance();
+
+        loadPlayerState();
 
         ImageView playPauseBtn, prevBtn, nextBtn;
 
@@ -58,31 +61,27 @@ public class QueueActivity extends AppCompatActivity {
 
         int grayColor = Color.parseColor("#9E9E9E");
 
-        // Nav icon & text coloring
         addIcon.setColorFilter(grayColor);
-        queueIcon.setColorFilter(Color.parseColor("#FF0000")); // Active
+        queueIcon.setColorFilter(Color.parseColor("#FF0000"));
         presetIcon.setColorFilter(grayColor);
         settingsIcon.setColorFilter(grayColor);
 
         addIconText.setTextColor(grayColor);
-        queueIconText.setTextColor(Color.parseColor("#FF0000")); // Active
+        queueIconText.setTextColor(Color.parseColor("#FF0000"));
         presetText.setTextColor(grayColor);
         settingsText.setTextColor(grayColor);
 
-        // Nav listeners
         navAdd.setOnClickListener(v -> openActivity(LandingPageActivity.class));
         navQueue.setOnClickListener(v -> openActivity(QueueActivity.class));
         navPreset.setOnClickListener(v -> openActivity(PresetActivity.class));
         navSettings.setOnClickListener(v -> openActivity(SettingsActivity.class));
 
-        // Effect layout mapping
         effectLayouts.put("Delay", R.layout.custom_button_delay_queue);
         effectLayouts.put("Reverb", R.layout.custom_button_reverb_queue);
         effectLayouts.put("Cleantone", R.layout.custom_button_cleantone_queue);
         effectLayouts.put("Distortion", R.layout.custom_button_distortion_queue);
         effectLayouts.put("Overdrive", R.layout.custom_button_overdrive_queue);
 
-        // Buttons
         Button clearBtn = findViewById(R.id.clearButton);
         Button savePresetButton = findViewById(R.id.saveButton);
         playPauseBtn = findViewById(R.id.playPauseButton);
@@ -96,6 +95,7 @@ public class QueueActivity extends AppCompatActivity {
             effectContainer.removeAllViews();
             currentEffectIndex = 0;
             isPlaying = false;
+            savePlayerState();
         });
 
         playPauseBtn.setOnClickListener(v -> togglePlayPause());
@@ -104,24 +104,22 @@ public class QueueActivity extends AppCompatActivity {
 
         savePresetButton.setOnClickListener(v -> showSavePresetDialog());
 
-        // Display effects
         displayEffects();
     }
 
     private void openActivity(Class<?> activityClass) {
+        savePlayerState();
         Intent intent = new Intent(QueueActivity.this, activityClass);
         intent.putStringArrayListExtra("selectedEffects", selectedEffects);
         startActivity(intent);
     }
 
     private void displayEffects() {
-        effectContainer.removeAllViews(); // Clear previous views
-
+        effectContainer.removeAllViews();
         selectedEffects.clear();
         selectedEffects.addAll(effectManager.getSelectedEffects());
-
         effectsList.clear();
-        effectsList.addAll(selectedEffects); // Used for play/pause/next logic
+        effectsList.addAll(selectedEffects);
 
         for (int i = 0; i < selectedEffects.size(); i++) {
             String effect = selectedEffects.get(i);
@@ -132,6 +130,17 @@ public class QueueActivity extends AppCompatActivity {
                 ImageButton removeButton = effectView.findViewById(R.id.removeEffectButton);
                 if (removeButton != null) {
                     removeButton.setOnClickListener(v -> removeEffect(effect, effectView));
+                }
+
+                TextView label = effectView.findViewById(R.id.effectLabel);
+                if (label != null) {
+                    if (i == currentEffectIndex && isPlaying) {
+                        label.setText("\uD83C\uDFB5 Now Playing: " + effect);
+                        label.setTextColor(Color.GREEN);
+                    } else {
+                        label.setText(effect);
+                        label.setTextColor(Color.WHITE);
+                    }
                 }
 
                 effectContainer.addView(effectView);
@@ -151,6 +160,7 @@ public class QueueActivity extends AppCompatActivity {
         }
 
         processAudioFileAfterRemoval();
+        savePlayerState();
     }
 
     private void showSavePresetDialog() {
@@ -167,7 +177,6 @@ public class QueueActivity extends AppCompatActivity {
                 String effectsCsv = android.text.TextUtils.join(",", selectedEffects);
                 PresetDatabaseHelper dbHelper = new PresetDatabaseHelper(this);
                 boolean success = dbHelper.savePreset(presetName, effectsCsv);
-
                 Toast.makeText(this, success ? "Preset saved!" : "Failed to save preset.", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Preset name cannot be empty.", Toast.LENGTH_SHORT).show();
@@ -175,7 +184,6 @@ public class QueueActivity extends AppCompatActivity {
         });
 
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-
         builder.show();
     }
 
@@ -191,6 +199,7 @@ public class QueueActivity extends AppCompatActivity {
             playEffect(currentEffectIndex);
         }
         isPlaying = !isPlaying;
+        savePlayerState();
     }
 
     private void playPreviousEffect() {
@@ -212,10 +221,10 @@ public class QueueActivity extends AppCompatActivity {
     private void playEffect(int index) {
         for (int i = 0; i < effectContainer.getChildCount(); i++) {
             View child = effectContainer.getChildAt(i);
-            TextView label = child.findViewById(R.id.effectLabel); // Make sure each layout has this ID
+            TextView label = child.findViewById(R.id.effectLabel);
             if (label != null) {
                 if (i == index) {
-                    label.setText("🎵 Now Playing: " + effectsList.get(i));
+                    label.setText("\uD83C\uDFB5 Now Playing: " + effectsList.get(i));
                     label.setTextColor(Color.GREEN);
                 } else {
                     label.setText(effectsList.get(i));
@@ -223,8 +232,7 @@ public class QueueActivity extends AppCompatActivity {
                 }
             }
         }
-
-        // TODO: Implement actual audio effect trigger here
+        savePlayerState();
     }
 
     private void pauseEffect() {
@@ -236,8 +244,7 @@ public class QueueActivity extends AppCompatActivity {
                 label.setTextColor(Color.WHITE);
             }
         }
-
-        // TODO: Pause logic if applicable
+        savePlayerState();
     }
 
     private void savePlayerState() {
@@ -248,8 +255,13 @@ public class QueueActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    private void loadPlayerState() {
+        SharedPreferences sharedPreferences = getSharedPreferences("PlayerState", MODE_PRIVATE);
+        currentEffectIndex = sharedPreferences.getInt("currentEffectIndex", 0);
+        isPlaying = sharedPreferences.getBoolean("isPlaying", false);
+    }
 
     private void processAudioFileAfterRemoval() {
-        // TODO: Reapply audio processing logic based on new queue
+        // TODO: Implement logic to update audio file after removal
     }
 }
