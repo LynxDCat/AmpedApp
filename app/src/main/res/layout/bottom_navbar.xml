@@ -9,30 +9,6 @@
     android:elevation="8dp">
 
     <LinearLayout
-        android:id="@+id/nav"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:clickable="true"
-        android:focusable="true">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@raw/music"
-            app:tint="#9E9E9E" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Feed"
-            android:textColor="#9E9E9E"
-            android:textSize="12sp" />
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/nav_queue"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
