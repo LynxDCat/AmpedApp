@@ -72,12 +72,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="Account"
-                    android:textSize="24sp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="24dp"
-                    android:textColor="@color/white"/>
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="Welcome User"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -132,33 +132,6 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="24dp"
                     android:textColor="@color/white"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/logoutLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp">
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@raw/logout_icon"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="16dp"
-                    app:tint="#FF0000"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="Logout"
-                    android:textSize="24sp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="24dp"
-                    android:textColor="#FF0000"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
