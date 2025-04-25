@@ -280,6 +280,7 @@ public class QueueActivity extends AppCompatActivity {
     private void playEffect(int index) {
         displayEffects();
         savePlayerState();
+        //wala to
     }
 
     private void pauseEffect() {
