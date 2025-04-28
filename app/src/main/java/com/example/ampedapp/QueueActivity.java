@@ -342,6 +342,7 @@ public class QueueActivity extends AppCompatActivity {
     }
 
     private void handleReceivedData(String data) {
+        ImageView playPauseBtn = findViewById(R.id.playPauseButton);
         switch (data) {
             case "1":
                 Toast.makeText(this, "Previous Effect", Toast.LENGTH_SHORT).show();
