@@ -37,6 +37,8 @@ public class LandingPageActivity extends AppCompatActivity {
 
     private final ArrayList<String> selectedEffects = new ArrayList<>();
 
+    Boolean isOpenDropDelay = false, isOpenDropReverb = false, isOpenDropCleantone = false, isOpenDropDistortion = false, isOpenDropOverdrive = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,11 +124,61 @@ public class LandingPageActivity extends AppCompatActivity {
         mediaPlayerDistortion = MediaPlayer.create(this, R.raw.distortion_sample);
         mediaPlayerOverdrive = MediaPlayer.create(this, R.raw.sample); // change this
 
-        buttonDelay.setOnClickListener(v -> toggleDropdown(dropdownDelay));
-        buttonReverb.setOnClickListener(v -> toggleDropdown(dropdownReverb));
-        buttonCleantone.setOnClickListener(v -> toggleDropdown(dropdownCleantone));
-        buttonDistortion.setOnClickListener(v -> toggleDropdown(dropdownDistortion));
-        buttonOverdrive.setOnClickListener(v -> toggleDropdown(dropdownOverdrive));
+        buttonDelay.setOnClickListener(v -> {
+            if(!isOpenDropDelay){
+                Log.d("LandingPageActivity", "Delay drop down button open!");
+                isOpenDropDelay = true;
+            } else {
+                Log.d("LandingPageActivity", "Delay drop down button closed!");
+                isOpenDropDelay = false;
+            }
+
+            toggleDropdown(dropdownDelay);
+        });
+        buttonReverb.setOnClickListener(v -> {
+            if(!isOpenDropReverb){
+                Log.d("LandingPageActivity", "Reverb drop down button open!");
+                isOpenDropReverb = true;
+            } else {
+                Log.d("LandingPageActivity", "Reverb drop down button closed!");
+                isOpenDropReverb = false;
+            }
+
+            toggleDropdown(dropdownReverb);
+        });
+        buttonCleantone.setOnClickListener(v -> {
+            if(!isOpenDropCleantone){
+                Log.d("LandingPageActivity", "Cleantone drop down button open!");
+                isOpenDropCleantone = true;
+            } else {
+                Log.d("LandingPageActivity", "Cleantone drop down button closed!");
+                isOpenDropCleantone = false;
+            }
+
+            toggleDropdown(dropdownCleantone);
+        });
+        buttonDistortion.setOnClickListener(v -> {
+            if(!isOpenDropDistortion){
+                Log.d("LandingPageActivity", "Distortion drop down button open!");
+                isOpenDropDistortion = true;
+            } else {
+                Log.d("LandingPageActivity", "Distortion drop down button closed!");
+                isOpenDropDistortion = false;
+            }
+
+            toggleDropdown(dropdownDistortion);
+        });
+        buttonOverdrive.setOnClickListener(v -> {
+            if(!isOpenDropOverdrive){
+                Log.d("LandingPageActivity", "Overdrive drop down button open!");
+                isOpenDropOverdrive = true;
+            } else {
+                Log.d("LandingPageActivity", "Overdrive drop down button closed!");
+                isOpenDropOverdrive = false;
+            }
+
+            toggleDropdown(dropdownOverdrive);
+        });
 
         playButton.setOnClickListener(v -> playPauseAudioDelay());
         playButtonReverb.setOnClickListener(v -> playPauseAudioReverb());
@@ -135,66 +187,72 @@ public class LandingPageActivity extends AppCompatActivity {
         playButtonOverdrive.setOnClickListener(v -> playPauseAudioOverdrive());
 
         addButton.setOnClickListener(v -> {
-            Log.d("AddQueueButton","Delay add button Clicked");
             if (!selectedEffects.contains("Delay")) {
                 EffectManager.getInstance().addEffect("Delay");
-                Log.d("AddQueueButton","Delay Added to the Queue");
-                Toast.makeText(this, "Delay Added to the Queue", Toast.LENGTH_SHORT).show();
+                Log.d("LandingPageActivity","Delay Added to the Queue");
+                isOpenDropDelay = false;
+                Log.d("LandingPageActivity", "Delay drop down button closed!");
+                //Toast.makeText(this, "Delay Added to the Queue", Toast.LENGTH_SHORT).show();
             } else {
-                Log.d("AddQueueButton","Delay is already in the Queue");
+                Log.d("LandingPageActivity","Delay is already in the Queue");
                 Toast.makeText(this, "Delay is already in the Queue", Toast.LENGTH_SHORT).show();
             }
             dropdownDelay.setVisibility(View.GONE);
         });
 
         addButtonReverb.setOnClickListener(v -> {
-            Log.d("AddQueueButton","Reverb add button Clicked");
             if (!selectedEffects.contains("Reverb")) {
                 EffectManager.getInstance().addEffect("Reverb");
-                Log.d("AddQueueButton","Reverb Added to the Queue");
-                Toast.makeText(this, "Reverb Added to the Queue", Toast.LENGTH_SHORT).show();
+                Log.d("LandingPageActivity","Reverb Added to the Queue");
+                isOpenDropReverb = false;
+                Log.d("LandingPageActivity", "Reverb drop down button closed!");
+                //Toast.makeText(this, "Reverb Added to the Queue", Toast.LENGTH_SHORT).show();
             } else {
-                Log.d("AddQueueButton","Reverb is already in the Queue");
-                Toast.makeText(this, "Reverb is already in the Queue", Toast.LENGTH_SHORT).show();
+                Log.d("LandingPageActivity","Reverb is already in the Queue");
+                //Toast.makeText(this, "Reverb is already in the Queue", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Reverb is already in the Queue", Toast.LENGTH_SHORT).show();
             }
             dropdownReverb.setVisibility(View.GONE);
         });
 
         addButtonCleantone.setOnClickListener(v -> {
-            Log.d("AddQueueButton","Cleantone add button Clicked");
-            if (!selectedEffects.contains("Cleantone")) {
-                EffectManager.getInstance().addEffect("Cleantone");
-                Log.d("AddQueueButton","Cleantone Added to the Queue");
-                Toast.makeText(this, "Cleantone Added to the Queue", Toast.LENGTH_SHORT).show();
+            if (!selectedEffects.contains("Clean")) {
+                EffectManager.getInstance().addEffect("Clean");
+                Log.d("LandingPageActivity","Cleantone Added to the Queue");
+                isOpenDropCleantone = false;
+                Log.d("LandingPageActivity", "Cleantone drop down button closed!");
+                //Toast.makeText(this, "Cleantone Added to the Queue", Toast.LENGTH_SHORT).show();
             } else {
-                Log.d("AddQueueButton","Cleantone is already in the Queue");
-                Toast.makeText(this, "Cleantone is already in the Queue", Toast.LENGTH_SHORT).show();
+                Log.d("LandingPageActivity","Cleantone is already in the Queue");
+                //Toast.makeText(this, "Cleantone is already in the Queue", Toast.LENGTH_SHORT).show();
             }
             dropdownCleantone.setVisibility(View.GONE);
         });
 
         addButtonDistortion.setOnClickListener(v -> {
-            Log.d("AddQueueButton","Distortion add button Clicked");
             if (!selectedEffects.contains("Distortion")) {
                 EffectManager.getInstance().addEffect("Distortion");
-                Log.d("AddQueueButton","Distortion Added to the Queue");
-                Toast.makeText(this, "Distortion Added to the Queue", Toast.LENGTH_SHORT).show();
+                Log.d("LandingPageActivity","Distortion Added to the Queue");
+                isOpenDropDistortion = false;
+                Log.d("LandingPageActivity", "Distortion drop down button closed!");
+                //Toast.makeText(this, "Distortion Added to the Queue", Toast.LENGTH_SHORT).show();
             } else {
-                Log.d("AddQueueButton","Distortion is already in the Queue");
-                Toast.makeText(this, "Distortion is already in the Queue", Toast.LENGTH_SHORT).show();
+                Log.d("LandingPageActivity","Distortion is already in the Queue");
+                //Toast.makeText(this, "Distortion is already in the Queue", Toast.LENGTH_SHORT).show();
             }
             dropdownDistortion.setVisibility(View.GONE);
         });
 
         addButtonOverdrive.setOnClickListener(v -> {
-            Log.d("AddQueueButton","Overdrive add button Clicked");
             if (!selectedEffects.contains("Overdrive")) {
                 EffectManager.getInstance().addEffect("Overdrive");
-                Log.d("AddQueueButton","Overdrive Added to the Queue");
-                Toast.makeText(this, "Overdrive Added to the Queue", Toast.LENGTH_SHORT).show();
+                Log.d("LandingPageActivity","Overdrive Added to the Queue");
+                isOpenDropOverdrive = false;
+                Log.d("LandingPageActivity", "Overdrive drop down button closed!");
+                //Toast.makeText(this, "Overdrive Added to the Queue", Toast.LENGTH_SHORT).show();
             } else {
-                Log.d("AddQueueButton","Overdrive is already in the Queue");
-                Toast.makeText(this, "Overdrive is already in the Queue", Toast.LENGTH_SHORT).show();
+                Log.d("LandingPageActivity","Overdrive is already in the Queue");
+                //Toast.makeText(this, "Overdrive is already in the Queue", Toast.LENGTH_SHORT).show();
             }
             dropdownOverdrive.setVisibility(View.GONE);
         });
@@ -222,14 +280,11 @@ public class LandingPageActivity extends AppCompatActivity {
             playButton.setImageResource(R.raw.play_icon);
             handler.removeCallbacks(updateSeekBarDelay);
         } else {
-            // Stop other media players if necessary
-            stopAllMediaPlayersExcept(mediaPlayerDelay);
-
+            stopAllMediaPlayersExcept(mediaPlayerDelay);  // Stop other players
             mediaPlayerDelay.start();
             playButton.setImageResource(R.raw.pause_icon);
             seekBarDelay.setMax(mediaPlayerDelay.getDuration());
-
-            handler.postDelayed(updateSeekBarDelay, 1000);
+            handler.postDelayed(updateSeekBarDelay, 1000);  // Start updating seekbar
         }
 
         isPlayingDelay = !isPlayingDelay;
@@ -247,10 +302,11 @@ public class LandingPageActivity extends AppCompatActivity {
             playButtonReverb.setImageResource(R.raw.play_icon);
             handler.removeCallbacks(updateSeekBarReverb);
         } else {
+            stopAllMediaPlayersExcept(mediaPlayerReverb);  // Stop other players
             mediaPlayerReverb.start();
             playButtonReverb.setImageResource(R.raw.pause_icon);
             seekBarReverb.setMax(mediaPlayerReverb.getDuration());
-            handler.postDelayed(updateSeekBarReverb, 1000);
+            handler.postDelayed(updateSeekBarReverb, 1000);  // Start updating seekbar
         }
 
         isPlayingReverb = !isPlayingReverb;
@@ -267,10 +323,11 @@ public class LandingPageActivity extends AppCompatActivity {
             playButtonCleantone.setImageResource(R.raw.play_icon);
             handler.removeCallbacks(updateSeekBarCleantone);
         } else {
+            stopAllMediaPlayersExcept(mediaPlayerCleantone);
             mediaPlayerCleantone.start();
             playButtonCleantone.setImageResource(R.raw.pause_icon);
             seekBarCleantone.setMax(mediaPlayerCleantone.getDuration());
-            handler.postDelayed(updateSeekBarCleantone, 1000);
+            handler.postDelayed(updateSeekBarReverb, 1000);
         }
 
         isPlayingCleantone = !isPlayingCleantone;
@@ -287,6 +344,7 @@ public class LandingPageActivity extends AppCompatActivity {
             playButtonDistortion.setImageResource(R.raw.play_icon);
             handler.removeCallbacks(updateSeekBarDistortion);
         } else {
+            stopAllMediaPlayersExcept(mediaPlayerDistortion);
             mediaPlayerDistortion.start();
             playButtonDistortion.setImageResource(R.raw.pause_icon);
             seekBarDistortion.setMax(mediaPlayerDistortion.getDuration());
@@ -307,6 +365,7 @@ public class LandingPageActivity extends AppCompatActivity {
             playButtonOverdrive.setImageResource(R.raw.play_icon);
             handler.removeCallbacks(updateSeekBarOverdrive);
         } else {
+            stopAllMediaPlayersExcept(mediaPlayerOverdrive);
             mediaPlayerOverdrive.start();
             playButtonOverdrive.setImageResource(R.raw.pause_icon);
             seekBarOverdrive.setMax(mediaPlayerOverdrive.getDuration());
@@ -363,11 +422,23 @@ public class LandingPageActivity extends AppCompatActivity {
     }
 
     private void stopAllMediaPlayersExcept(MediaPlayer current) {
-        MediaPlayer[] players = { mediaPlayerDelay, mediaPlayerReverb, mediaPlayerCleantone, mediaPlayerDistortion, mediaPlayerOverdrive };
+        MediaPlayer[] players = {mediaPlayerDelay, mediaPlayerReverb, mediaPlayerCleantone, mediaPlayerDistortion, mediaPlayerOverdrive};
 
         for (MediaPlayer player : players) {
             if (player != null && player != current && player.isPlaying()) {
                 player.pause();
+                // Ensure the seek bar is reset if the player is stopped
+                if (player == mediaPlayerDelay) {
+                    seekBarDelay.setProgress(0);
+                } else if (player == mediaPlayerReverb) {
+                    seekBarReverb.setProgress(0);
+                } else if (player == mediaPlayerCleantone) {
+                    seekBarCleantone.setProgress(0);
+                } else if (player == mediaPlayerDistortion) {
+                    seekBarDistortion.setProgress(0);
+                } else if (player == mediaPlayerOverdrive) {
+                    seekBarOverdrive.setProgress(0);
+                }
             }
         }
     }
@@ -382,36 +453,27 @@ public class LandingPageActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mediaPlayerDelay != null) {
-            mediaPlayerDelay.stop();
-            mediaPlayerDelay.release();
-            mediaPlayerDelay = null;
-        }
-        if (mediaPlayerDistortion != null) {
-            mediaPlayerDistortion.stop();
-            mediaPlayerDistortion.release();
-            mediaPlayerDistortion = null;
-        }
-        if (mediaPlayerReverb != null) {
-            mediaPlayerReverb.stop();
-            mediaPlayerReverb.release();
-            mediaPlayerReverb = null;
-        }
-        if (mediaPlayerCleantone != null) {
-            mediaPlayerCleantone.stop();
-            mediaPlayerCleantone.release();
-            mediaPlayerCleantone = null;
-        }
-        if (mediaPlayerOverdrive != null) {
-            mediaPlayerOverdrive.stop();
-            mediaPlayerOverdrive.release();
-            mediaPlayerOverdrive = null;
-        }
+        // Release all media players
+        releaseMediaPlayer(mediaPlayerDelay);
+        releaseMediaPlayer(mediaPlayerReverb);
+        releaseMediaPlayer(mediaPlayerCleantone);
+        releaseMediaPlayer(mediaPlayerDistortion);
+        releaseMediaPlayer(mediaPlayerOverdrive);
+
+        // Remove all handler callbacks
         handler.removeCallbacks(updateSeekBarCleantone);
         handler.removeCallbacks(updateSeekBarOverdrive);
         handler.removeCallbacks(updateSeekBarDelay);
         handler.removeCallbacks(updateSeekBarDistortion);
         handler.removeCallbacks(updateSeekBarReverb);
+
+        // Shutdown executor service
         executorService.shutdown();
+    }
+    private void releaseMediaPlayer(MediaPlayer mediaPlayer) {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
     }
 }

@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import androidx.activity.EdgeToEdge;
@@ -40,13 +41,14 @@ public class QueueActivity extends AppCompatActivity {
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private boolean isConnected = false;
 
-    private final String ESP32_MAC = "CC:DB:A7:2D:AE:7A"; // Replace with your ESP32 address
+    private final String ESP32_MAC = "CC:DB:A7:2D:AE:7A"; // Main ESP32 address
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.queue_page);
+
 
         // NAVIGATION BAR
         LinearLayout navAdd = findViewById(R.id.nav_add);
@@ -99,10 +101,11 @@ public class QueueActivity extends AppCompatActivity {
     private void initEffectLayouts() {
         effectLayouts.put("Delay", R.layout.custom_button_delay_queue);
         effectLayouts.put("Reverb", R.layout.custom_button_reverb_queue);
-        effectLayouts.put("Cleantone", R.layout.custom_button_cleantone_queue);
+        effectLayouts.put("Clean", R.layout.custom_button_cleantone_queue); // Updated from Cleantone
         effectLayouts.put("Distortion", R.layout.custom_button_distortion_queue);
         effectLayouts.put("Overdrive", R.layout.custom_button_overdrive_queue);
     }
+
 
     private void initButtons() {
         Button clearBtn = findViewById(R.id.clearButton);
@@ -122,6 +125,7 @@ public class QueueActivity extends AppCompatActivity {
             savePlayerState();
         });
 
+
         saveBtn.setOnClickListener(v -> showSavePresetDialog());
 
         uploadBtn.setOnClickListener(v -> {
@@ -131,43 +135,62 @@ public class QueueActivity extends AppCompatActivity {
             }
 
             if (!isConnected) {
-                connectToESP32(() -> sendDataToESP32()); // Pass the Runnable onConnected correctly
+                connectToESP32(() -> sendDataToESP32());
             } else {
                 sendDataToESP32();
             }
         });
 
-        playPauseBtn.setOnClickListener(v -> togglePlayPause());
-        prevBtn.setOnClickListener(v -> playPreviousEffect());
-        nextBtn.setOnClickListener(v -> playNextEffect());
+        playPauseBtn.setOnClickListener(v ->{
+            togglePlayPause();
+            Log.d("PlayButtons", "Play/Pause button clicked");
+        });
+        prevBtn.setOnClickListener(v -> {
+            playPreviousEffect();
+            Log.d("PlayButtons", "Previous button clicked");
+        });
+        nextBtn.setOnClickListener(v -> {
+            playNextEffect();
+            Log.d("PlayButtons", "Next button clicked");
+        });
     }
 
     private void connectToESP32(Runnable onConnected) {
+        // Check if Bluetooth is available and enabled
         if (bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {
+            Toast.makeText(this, "Bluetooth not enabled", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        esp32Device = bluetoothAdapter.getRemoteDevice(ESP32_MAC);
+        esp32Device = bluetoothAdapter.getRemoteDevice(ESP32_MAC); // Get ESP32 device by MAC address
 
+        // Start a background thread for Bluetooth connection
         new Thread(() -> {
             try {
+                // Create Bluetooth socket using a valid service UUID
                 bluetoothSocket = esp32Device.createRfcommSocketToServiceRecord(MY_UUID);
                 bluetoothSocket.connect();
                 isConnected = true;
 
-                listenForDataFromESP32(); // ✅ Start listening for commands here
+                listenForDataFromESP32();  // Start listening for data after connection
 
                 runOnUiThread(() -> {
                     Toast.makeText(getApplicationContext(), "Connected to ESP32", Toast.LENGTH_SHORT).show();
-                    onConnected.run();
+                    onConnected.run();  // Run the callback after connection is successful
                 });
 
             } catch (IOException e) {
                 e.printStackTrace();
                 isConnected = false;
+
+                // Show a more detailed error message
                 runOnUiThread(() -> {
+                    Toast.makeText(this, "Failed to connect to ESP32. Please try again.", Toast.LENGTH_LONG).show();
+                    Log.e("QueueActivity", "Bluetooth connection failed: " + e.getMessage());
+
+                    // Optional: Retry the connection by clicking the upload button again
                     Button uploadBtn = findViewById(R.id.uploadButton);
-                    uploadBtn.performClick(); // Optional: retry logic
+                    uploadBtn.performClick();
                 });
             }
         }).start();
@@ -175,56 +198,112 @@ public class QueueActivity extends AppCompatActivity {
 
 
     private void sendDataToESP32() {
+        // Ensure the Bluetooth socket is connected before sending data
         if (bluetoothSocket == null || !bluetoothSocket.isConnected()) {
             Toast.makeText(this, "ESP32 is not connected. Reconnecting...", Toast.LENGTH_SHORT).show();
-            connectToESP32(() -> sendDataToESP32()); // Ensure onConnected is passed properly
+            connectToESP32(() -> sendDataToESP32());
+            return;
+        }
+
+        // Validate currentEffectIndex
+        if (effectsList.isEmpty() || currentEffectIndex < 0 || currentEffectIndex >= effectsList.size()) {
+            //Log.d("QueueActivity", "currentEffectIndex: " + currentEffectIndex + ", effectsList size: " + effectsList.size());
+            Toast.makeText(this, "Invalid effect index or empty effects list", Toast.LENGTH_SHORT).show();
             return;
         }
 
         try {
-            String effectName = effectsList.get(currentEffectIndex);  // Get the current effect
+            // Now it's safe to get the effect from the list
+            String effectName = effectsList.get(currentEffectIndex);
+            //Log.d("QueueActivity", "currentEffectIndex: " + currentEffectIndex + ", effectsList size: " + effectsList.size());
             JSONObject json = new JSONObject();
             json.put("command", effectName);
-            json.put("value", "500"); // Or use a dynamic value if needed
+            json.put("value", "500");
+            //togglePlayPause();
+            if (effectsList.isEmpty()) return;
+
+            if (!isPlaying) {
+                // If no effect is playing, this is the first time an effect is being uploaded and played
+                if (currentEffectIndex == 0) {
+                    // Mark the first effect as "Now Playing"
+                    isPlaying = true;
+                    playEffect(currentEffectIndex); // Start playing the first effect
+                    displayEffects();  // Update the UI to show "Now Playing"
+                }
+            } else {
+                // If an effect is already playing, pause it
+                pauseEffect();
+            }
+            savePlayerState();
 
             OutputStream outputStream = bluetoothSocket.getOutputStream();
-            outputStream.write(json.toString().getBytes(StandardCharsets.UTF_8));
+            outputStream.write((json.toString() + "\n").getBytes(StandardCharsets.UTF_8)); // Send the command
             outputStream.flush();
 
-            Toast.makeText(this, "Data sent to ESP32 for " + effectName, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Sent " + effectName + " to ESP32", Toast.LENGTH_SHORT).show();
+            Log.d("EffectSent", "Sent " + effectName + " to ESP32");
+
         } catch (IOException | JSONException e) {
             e.printStackTrace();
             Toast.makeText(this, "Failed to send data", Toast.LENGTH_SHORT).show();
         }
     }
 
-
-
-    private void listenForDisconnection() {
+    private void listenForDataFromESP32() {
         new Thread(() -> {
             try {
                 InputStream inputStream = bluetoothSocket.getInputStream();
                 byte[] buffer = new byte[1024];
-                while (isConnected && bluetoothSocket.isConnected()) {
-                    int read = inputStream.read(buffer);
-                    if (read == -1) break;
+                int bytes;
+
+                while (bluetoothSocket != null && bluetoothSocket.isConnected()) {
+                    bytes = inputStream.read(buffer);
+                    if (bytes > 0) {
+                        String received = new String(buffer, 0, bytes).trim();
+                        runOnUiThread(() -> handleReceivedData(received));
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                isConnected = false;
-                runOnUiThread(() -> Toast.makeText(this, "Disconnected from ESP32", Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> {
+                    isConnected = false;
+                    Toast.makeText(getApplicationContext(), "Connection lost", Toast.LENGTH_SHORT).show();
+                });
             }
         }).start();
     }
 
-    // --- UI & Playback ---
+    private void handleReceivedData(String data) {
+        switch (data) {
+            case "1":
+                Toast.makeText(this, "Previous Effect", Toast.LENGTH_SHORT).show();
+                playPreviousEffect();
+                break;
+            case "2":
+                Toast.makeText(this, "Toggle Play/Pause", Toast.LENGTH_SHORT).show();
+                togglePlayPause();
+                break;
+            case "3":
+                Toast.makeText(this, "Next Effect", Toast.LENGTH_SHORT).show();
+                playNextEffect();
+                break;
+            default:
+                // Ignore unknown commands
+                break;
+        }
+    }
+
     private void displayEffects() {
-        effectContainer.removeAllViews();
+        effectContainer.removeAllViews(); // Clear existing effects
         selectedEffects.clear();
-        selectedEffects.addAll(effectManager.getSelectedEffects());
+        selectedEffects.addAll(effectManager.getSelectedEffects()); // Get selected effects
         effectsList.clear();
-        effectsList.addAll(selectedEffects);
+        effectsList.addAll(selectedEffects); // Update the effects list
+
+        // Ensure currentEffectIndex is within valid bounds
+        if (currentEffectIndex >= effectsList.size()) {
+            currentEffectIndex = effectsList.size() - 1; // Reset to the last valid index
+        }
 
         for (int i = 0; i < selectedEffects.size(); i++) {
             String effect = selectedEffects.get(i);
@@ -233,54 +312,64 @@ public class QueueActivity extends AppCompatActivity {
             ImageButton removeButton = view.findViewById(R.id.removeEffectButton);
             TextView label = view.findViewById(R.id.effectLabel);
 
-            int finalI = i;
             if (removeButton != null) {
+                // Set remove button listener
                 removeButton.setOnClickListener(v -> {
-                    effectManager.removeEffect(effect);
-                    selectedEffects.remove(effect);
-                    effectsList.remove(effect);
-                    displayEffects();
+                    effectManager.removeEffect(effect);  // Remove effect from manager
+                    selectedEffects.remove(effect);  // Remove from selected effects
+                    effectsList.remove(effect);  // Remove from effects list
+                    displayEffects(); // Re-update the effect list
                 });
             }
 
             if (label != null) {
-                label.setText(i == currentEffectIndex && isPlaying
-                        ? "🎵 Now Playing: " + effect
-                        : effect);
-                label.setTextColor(i == currentEffectIndex && isPlaying
-                        ? Color.GREEN
-                        : Color.WHITE);
+                if (i == currentEffectIndex && isPlaying) {
+                    label.setText("🎵 Now Playing: " + effect);
+                    label.setTextColor(Color.GREEN);
+                } else if (i == 0) {
+                    label.setText(effect);  // Just the effect name
+                    label.setTextColor(Color.WHITE);  // White color for the first item if not playing
+                } else {
+                    label.setText(effect);
+                    label.setTextColor(Color.WHITE);  // Default white color
+                }
             }
 
-            effectContainer.addView(view);
+            effectContainer.addView(view);  // Add the view to the container
         }
     }
 
+
+
     private void togglePlayPause() {
-        if (effectsList.isEmpty()) return;
-        if (isPlaying) pauseEffect(); else playEffect(currentEffectIndex);
-        isPlaying = !isPlaying;
-        savePlayerState();
+        JSONObject json = new JSONObject();
+        try {
+            json.put("command", "Clean");
+            json.put("value", "500");
+            Log.d("EffectSent", "Sent Cleantone to ESP32");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
+
 
     private void playPreviousEffect() {
         if (currentEffectIndex > 0) currentEffectIndex--;
         playEffect(currentEffectIndex);
         isPlaying = true;
-        sendDataToESP32();  // Send data after changing to previous effect
+        sendDataToESP32();
     }
 
     private void playNextEffect() {
         if (currentEffectIndex < effectsList.size() - 1) currentEffectIndex++;
         playEffect(currentEffectIndex);
         isPlaying = true;
-        sendDataToESP32();  // Send data after changing to next effect
+        sendDataToESP32();
     }
 
     private void playEffect(int index) {
         displayEffects();
         savePlayerState();
-        //wala to
     }
 
     private void pauseEffect() {
@@ -318,49 +407,6 @@ public class QueueActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("PlayerState", MODE_PRIVATE);
         currentEffectIndex = sharedPreferences.getInt("currentEffectIndex", 0);
         isPlaying = sharedPreferences.getBoolean("isPlaying", false);
-    }
-
-    private void listenForDataFromESP32() {
-        new Thread(() -> {
-            try {
-                InputStream inputStream = bluetoothSocket.getInputStream();
-                byte[] buffer = new byte[1024];
-                int bytes;
-
-                while (bluetoothSocket != null && bluetoothSocket.isConnected()) {
-                    bytes = inputStream.read(buffer);
-                    if (bytes > 0) {
-                        String received = new String(buffer, 0, bytes).trim();
-                        runOnUiThread(() -> handleReceivedData(received));
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(getApplicationContext(), "Connection lost", Toast.LENGTH_SHORT).show());
-            }
-        }).start();
-    }
-
-    private void handleReceivedData(String data) {
-        ImageView playPauseBtn = findViewById(R.id.playPauseButton);
-        switch (data) {
-            case "1":
-                Toast.makeText(this, "Previous Effect", Toast.LENGTH_SHORT).show();
-                playPreviousEffect();
-                break;
-            case "2":
-                Toast.makeText(this, "Toggle Play/Pause", Toast.LENGTH_SHORT).show();
-                togglePlayPause();
-                break;
-            case "3":
-                Toast.makeText(this, "Next Effect", Toast.LENGTH_SHORT).show();
-                playNextEffect();
-                break;
-
-            default:
-                //Toast.makeText(this, "Unknown Command: " + data, Toast.LENGTH_SHORT).show();
-                break;
-        }
     }
 
     private void openActivity(Class<?> activityClass) {
