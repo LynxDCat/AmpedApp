@@ -82,6 +82,34 @@
 
                 </LinearLayout>
 
+                <!-- Delay Value Field -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Delay value:"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/delay_input"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:inputType="number"
+                        android:background="@color/white"
+                        android:textColor="#28282B"
+                        android:hint="0ms to 1000ms"
+                        android:padding="8dp" />
+                </LinearLayout>
+
                 <!-- Add Button -->
                 <Button
                     android:id="@+id/add_button"
@@ -134,6 +162,34 @@
                         android:max="100"
                         android:progress="0" />
 
+                </LinearLayout>
+
+                <!-- Reverb Value Field -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Wet value:"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/reverb_input"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:inputType="numberDecimal"
+                        android:background="@color/white"
+                        android:textColor="#28282B"
+                        android:hint="0.0 min, 1.0 max"
+                        android:padding="8dp" />
                 </LinearLayout>
 
                 <!-- Add Button -->
@@ -245,6 +301,34 @@
 
                 </LinearLayout>
 
+                <!-- Distortion Value Field -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gain value:"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/distortion_input"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:inputType="numberDecimal"
+                        android:background="@color/white"
+                        android:textColor="#28282B"
+                        android:hint="0.0 min, .60 max"
+                        android:padding="8dp" />
+                </LinearLayout>
+
                 <!-- Add Button -->
                 <Button
                     android:id="@+id/add_button_distortion"
@@ -297,6 +381,34 @@
                         android:max="100"
                         android:progress="0" />
 
+                </LinearLayout>
+
+                <!-- Overdrive Value Field -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gain value:"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/overdrive_input"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:inputType="numberDecimal"
+                        android:background="@color/white"
+                        android:textColor="#28282B"
+                        android:hint="0.0 min, 4.0 max"
+                        android:padding="8dp" />
                 </LinearLayout>
 
                 <!-- Add Button -->

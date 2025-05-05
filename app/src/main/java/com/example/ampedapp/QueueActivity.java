@@ -1,6 +1,7 @@
 package com.example.ampedapp;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -32,6 +34,7 @@ public class QueueActivity extends AppCompatActivity {
     private EffectManager effectManager;
     private final ArrayList<String> selectedEffects = new ArrayList<>();
     private final ArrayList<String> effectsList = new ArrayList<>();
+    private final ArrayList<String> effectsListValue = new ArrayList<>();
     private boolean isPlaying;
     private int currentEffectIndex;
 
@@ -147,10 +150,16 @@ public class QueueActivity extends AppCompatActivity {
         });
         prevBtn.setOnClickListener(v -> {
             playPreviousEffect();
+            String effectName = effectsList.get(currentEffectIndex);
+            String value = effectsListValue.get(currentEffectIndex);
+            Log.d("PlayButtons",  effectName + " " + value);
             Log.d("PlayButtons", "Previous button clicked");
         });
         nextBtn.setOnClickListener(v -> {
             playNextEffect();
+            String effectName = effectsList.get(currentEffectIndex);
+            String value = effectsListValue.get(currentEffectIndex);
+            Log.d("PlayButtons",  effectName + " " + value);
             Log.d("PlayButtons", "Next button clicked");
         });
     }
@@ -215,10 +224,11 @@ public class QueueActivity extends AppCompatActivity {
         try {
             // Now it's safe to get the effect from the list
             String effectName = effectsList.get(currentEffectIndex);
+            String value = effectsListValue.get(currentEffectIndex);
             //Log.d("QueueActivity", "currentEffectIndex: " + currentEffectIndex + ", effectsList size: " + effectsList.size());
             JSONObject json = new JSONObject();
             json.put("command", effectName);
-            json.put("value", "500");
+            json.put("value", value);
             //togglePlayPause();
             if (effectsList.isEmpty()) return;
 
@@ -281,6 +291,7 @@ public class QueueActivity extends AppCompatActivity {
                 break;
             case "2":
                 Toast.makeText(this, "Toggle Play/Pause", Toast.LENGTH_SHORT).show();
+
                 togglePlayPause();
                 break;
             case "3":
@@ -297,6 +308,8 @@ public class QueueActivity extends AppCompatActivity {
         effectContainer.removeAllViews(); // Clear existing effects
         selectedEffects.clear();
         selectedEffects.addAll(effectManager.getSelectedEffects()); // Get selected effects
+        effectsListValue.clear();
+        effectsListValue.addAll(effectManager.getSelectedEffectsValue());
         effectsList.clear();
         effectsList.addAll(selectedEffects); // Update the effects list
 
@@ -342,6 +355,7 @@ public class QueueActivity extends AppCompatActivity {
 
 
     private void togglePlayPause() {
+
         JSONObject json = new JSONObject();
         try {
             json.put("command", "Clean");
@@ -412,5 +426,37 @@ public class QueueActivity extends AppCompatActivity {
     private void openActivity(Class<?> activityClass) {
         Intent intent = new Intent(QueueActivity.this, activityClass);
         startActivity(intent);
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Exit App")
+                .setMessage("Are you sure you want to close the application?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    //clearPlayerState(); // Your method to clear SharedPreferences or queues
+                    effectManager.clearEffects();
+                    selectedEffects.clear();
+                    effectsList.clear();
+                    effectContainer.removeAllViews();
+                    currentEffectIndex = 0;
+                    isPlaying = false;
+                    //savePlayerState();
+                    clearPlayerState(); // Your method to clear SharedPreferences or queues
+                    finishAffinity();
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    dialog.dismiss(); // Dismisses the dialog
+                })
+                .setCancelable(true)
+                .show();
+    }
+
+    private void clearPlayerState() {
+        SharedPreferences preferences = getSharedPreferences("PlayerState", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
     }
 }

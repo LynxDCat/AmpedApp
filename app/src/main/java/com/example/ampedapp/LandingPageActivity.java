@@ -2,6 +2,7 @@ package com.example.ampedapp;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -37,6 +40,7 @@ public class LandingPageActivity extends AppCompatActivity {
 
     private final ArrayList<String> selectedEffects = new ArrayList<>();
 
+
     Boolean isOpenDropDelay = false, isOpenDropReverb = false, isOpenDropCleantone = false, isOpenDropDistortion = false, isOpenDropOverdrive = false;
 
     @Override
@@ -48,6 +52,7 @@ public class LandingPageActivity extends AppCompatActivity {
         executorService = Executors.newSingleThreadExecutor();
         LinearLayout buttonDelay, buttonReverb, buttonCleantone, buttonDistortion, buttonOverdrive;
         Button addButton, addButtonReverb, addButtonCleantone, addButtonDistortion, addButtonOverdrive;
+        EditText addDelayInput, addReverbInput, addDistortionInput, addOverdriveInput;
         LinearLayout navAdd, navQueue, navPreset, navSettings;
         ImageView addIcon, queueIcon, presetIcon, settingsIcon;
         TextView addIconText, queueIconText, presetText, settingsText;
@@ -90,6 +95,10 @@ public class LandingPageActivity extends AppCompatActivity {
         navSettings.setOnClickListener(v -> openActivity(SettingsActivity.class));
         navPreset.setOnClickListener(v -> openActivity(PresetActivity.class));
 
+        addDelayInput = findViewById(R.id.delay_input);
+        addReverbInput = findViewById(R.id.reverb_input);
+        addDistortionInput = findViewById(R.id.distortion_input);
+        addOverdriveInput = findViewById(R.id.overdrive_input);
         buttonDelay = findViewById(R.id.button_delay);
         buttonReverb = findViewById(R.id.button_reverb);
         buttonCleantone = findViewById(R.id.button_cleantone);
@@ -187,8 +196,22 @@ public class LandingPageActivity extends AppCompatActivity {
         playButtonOverdrive.setOnClickListener(v -> playPauseAudioOverdrive());
 
         addButton.setOnClickListener(v -> {
+            String val = addDelayInput.getText().toString();
+
+            if(val.isEmpty()){
+                val = "500";
+            }
+
+            if(Integer.parseInt(val) > 1000){
+                val = "1000";
+            } else if (Integer.parseInt(val) < 0){
+                val = "0";
+            }
+
             if (!selectedEffects.contains("Delay")) {
                 EffectManager.getInstance().addEffect("Delay");
+                EffectManager.getInstance().addValue(val);
+                Log.d("EffectSentToQueue", "Delay, " + val);
                 Log.d("LandingPageActivity","Delay Added to the Queue");
                 isOpenDropDelay = false;
                 Log.d("LandingPageActivity", "Delay drop down button closed!");
@@ -201,8 +224,25 @@ public class LandingPageActivity extends AppCompatActivity {
         });
 
         addButtonReverb.setOnClickListener(v -> {
+            String val = addReverbInput.getText().toString();
+
+            if(val.isEmpty()){
+                val = "0.5";
+            }
+
+            if(Double.parseDouble(val) > 1.0){
+                val = "1.0";
+            } else if (Double.parseDouble(val) < 0.0){
+                val = "0.0";
+            }
+
+            Double valD = Double.parseDouble(val);
+            val = valD.toString();
+
             if (!selectedEffects.contains("Reverb")) {
                 EffectManager.getInstance().addEffect("Reverb");
+                EffectManager.getInstance().addValue(val);
+                Log.d("EffectSentToQueue", "Reverb, " + val);
                 Log.d("LandingPageActivity","Reverb Added to the Queue");
                 isOpenDropReverb = false;
                 Log.d("LandingPageActivity", "Reverb drop down button closed!");
@@ -216,8 +256,12 @@ public class LandingPageActivity extends AppCompatActivity {
         });
 
         addButtonCleantone.setOnClickListener(v -> {
+            String val = "500";
+
             if (!selectedEffects.contains("Clean")) {
                 EffectManager.getInstance().addEffect("Clean");
+                EffectManager.getInstance().addValue(val);
+                Log.d("EffectSentToQueue", "Clean, " + val);
                 Log.d("LandingPageActivity","Cleantone Added to the Queue");
                 isOpenDropCleantone = false;
                 Log.d("LandingPageActivity", "Cleantone drop down button closed!");
@@ -230,8 +274,25 @@ public class LandingPageActivity extends AppCompatActivity {
         });
 
         addButtonDistortion.setOnClickListener(v -> {
+            String val = addDistortionInput.getText().toString();
+
+            if(val.isEmpty()){
+                val = "3.0";
+            }
+
+            if(Double.parseDouble(val) > 6.0){
+                val = "6.0";
+            } else if (Double.parseDouble(val) < 0.0){
+                val = "0.0";
+            }
+
+            Double valD = Double.parseDouble(val);
+            val = valD.toString();
+
             if (!selectedEffects.contains("Distortion")) {
                 EffectManager.getInstance().addEffect("Distortion");
+                EffectManager.getInstance().addValue(val);
+                Log.d("EffectSentToQueue", "Distortion, " + val);
                 Log.d("LandingPageActivity","Distortion Added to the Queue");
                 isOpenDropDistortion = false;
                 Log.d("LandingPageActivity", "Distortion drop down button closed!");
@@ -244,8 +305,25 @@ public class LandingPageActivity extends AppCompatActivity {
         });
 
         addButtonOverdrive.setOnClickListener(v -> {
+            String val = addOverdriveInput.getText().toString();
+
+            if(val.isEmpty()){
+                val = "2.0";
+            }
+
+            if(Double.parseDouble(val) > 4.0){
+                val = "4.0";
+            } else if (Double.parseDouble(val) < 0.0){
+                val = "0.0";
+            }
+
+            Double valD = Double.parseDouble(val);
+            val = valD.toString();
+
             if (!selectedEffects.contains("Overdrive")) {
                 EffectManager.getInstance().addEffect("Overdrive");
+                EffectManager.getInstance().addValue(val);
+                Log.d("EffectSentToQueue", "Overdrive, " + val);
                 Log.d("LandingPageActivity","Overdrive Added to the Queue");
                 isOpenDropOverdrive = false;
                 Log.d("LandingPageActivity", "Overdrive drop down button closed!");
@@ -475,5 +553,30 @@ public class LandingPageActivity extends AppCompatActivity {
             mediaPlayer.stop();
             mediaPlayer.release();
         }
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Exit App")
+                .setMessage("Are you sure you want to close the application?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    selectedEffects.clear();
+                    clearPlayerState(); // Your method to clear SharedPreferences or queues
+                    finishAffinity();
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    dialog.dismiss(); // Dismisses the dialog
+                })
+                .setCancelable(true)
+                .show();
+    }
+
+    private void clearPlayerState() {
+        SharedPreferences preferences = getSharedPreferences("PlayerState", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
     }
 }
