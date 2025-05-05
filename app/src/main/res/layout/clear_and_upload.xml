@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#16171B"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Title TextView -->
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="How to Clear and Upload Effects"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="48dp"
+        android:layout_marginStart="16dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="SpeakableTextPresentCheck">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:layout_width="216dp"
+                android:layout_height="480dp"
+                android:src="@raw/cau1"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Navigate to the Queue tab and tap the &quot;×&quot; icon beside an item to delete it individually."
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="24dp"/>
+
+            <ImageView
+                android:layout_width="216dp"
+                android:layout_height="480dp"
+                android:src="@raw/cau2"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="To remove all items at once, tap the &quot;Clear&quot; button."
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"/>
+
+            <ImageView
+                android:layout_width="216dp"
+                android:layout_height="480dp"
+                android:src="@raw/cau3"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Queue has been cleared."
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"/>
+
+            <ImageView
+                android:layout_width="216dp"
+                android:layout_height="480dp"
+                android:src="@raw/cau4"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Tap the &quot;Upload&quot; button and wait for the app to display &quot;Connected&quot; and &quot;Data Sent&quot;."
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Once confirmed, you’re ready to start playing. Enjoy!"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp"
+                android:layout_marginEnd="24dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -33,6 +33,18 @@
         <activity
             android:name=".PresetActivity">
         </activity>
+        <activity
+            android:name=".HelpActivity">
+        </activity>
+        <activity
+            android:name=".HTAE">
+        </activity>
+        <activity
+            android:name=".SDP">
+        </activity>
+        <activity
+            android:name=".CAU">
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.BLUETOOTH"/>

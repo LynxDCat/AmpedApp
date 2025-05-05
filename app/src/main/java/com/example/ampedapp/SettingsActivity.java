@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -62,6 +64,16 @@ public class SettingsActivity extends AppCompatActivity {
         queueIconText.setTextColor(grayColor);
         presetText.setTextColor(grayColor);
         settingsText.setTextColor(Color.parseColor("#FF0000"));
+
+        LinearLayout htuLayout = findViewById(R.id.htuLayout);
+
+        htuLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this, HelpActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void openActivity(Class<?> activityClass) {
