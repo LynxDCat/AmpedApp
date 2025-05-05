@@ -1,6 +1,8 @@
 package com.example.ampedapp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -8,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -64,5 +67,30 @@ public class SettingsActivity extends AppCompatActivity {
     private void openActivity(Class<?> activityClass) {
         Intent intent = new Intent(SettingsActivity.this, activityClass);
         startActivity(intent);
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Exit App")
+                .setMessage("Are you sure you want to close the application?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    //selectedEffects.clear();
+                    clearPlayerState(); // Your method to clear SharedPreferences or queues
+                    finishAffinity();
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    dialog.dismiss(); // Dismisses the dialog
+                })
+                .setCancelable(true)
+                .show();
+    }
+
+    private void clearPlayerState() {
+        SharedPreferences preferences = getSharedPreferences("PlayerState", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
     }
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class EffectManager {
     private static final EffectManager instance = new EffectManager();
     private final ArrayList<String> selectedEffects = new ArrayList<>();
+    private final ArrayList<String> selectedEffectsValue = new ArrayList<>();
     private int currentPlayingIndex = -1;
     private boolean isPlaying = false;
 
@@ -19,9 +20,19 @@ public class EffectManager {
         selectedEffects.add(effect);
     }
 
+    public void addValue(String value){
+        selectedEffectsValue.add(value);
+    }
+
+
     public ArrayList<String> getSelectedEffects() {
         return new ArrayList<>(selectedEffects); // Return a copy to prevent modification outside
     }
+
+    public ArrayList<String> getSelectedEffectsValue() {
+        return new ArrayList<>(selectedEffectsValue); // Return a copy to prevent modification
+    }
+
 
     public void setSelectedEffects(ArrayList<String> effects) {
         selectedEffects.clear();  // Clear existing list
